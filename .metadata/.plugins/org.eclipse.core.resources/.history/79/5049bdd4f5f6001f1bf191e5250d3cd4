@@ -1,0 +1,61 @@
+package com.tus.GamingSite.eventrecord.controller;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.tus.nms.eventrecord.service.EventRecordService;
+import com.tus.nms.eventrecord.dto.ImsiFailureCountDTO;
+
+@RestController
+@RequestMapping("/api/eventrecord")
+public class EventRecordController {
+
+	private final EventRecordService eventRecordService;
+
+	public EventRecordController(EventRecordService eventRecordService) {
+		this.eventRecordService = eventRecordService;
+	}
+
+	@GetMapping("/imsi-failure")
+	public ResponseEntity<?> getFailedCallIMSIWithFailureCount(
+			@RequestParam(required = false) String startDate,
+			@RequestParam(required = false) String endDate) {
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+        // Validate startDate and endDate are provided
+        if (startDate == null || endDate == null || startDate.trim().isEmpty() || endDate.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Error: Both startDate and endDate are required.");
+        }
+         
+		LocalDateTime start;
+		LocalDateTime end;
+		
+		try {
+            start = LocalDateTime.parse(startDate, formatter);
+            end = LocalDateTime.parse(endDate, formatter);
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().body("Error: Invalid date format. Please use 'dd-MM-yyyy HH:mm:ss'.");
+        }
+		
+		if (start.isAfter(end)) {
+            return ResponseEntity.badRequest().body("Error: startDate must be before endDate.");
+        }
+
+		List<ImsiFailureCountDTO> imsiFailures = eventRecordService.getIMSIsWithCallFailuresCount(start, end);
+
+		if (imsiFailures.isEmpty()) {
+			return ResponseEntity.ok("There are no IMSI failures for the given time period.");
+		}
+
+		return ResponseEntity.ok(imsiFailures);
+	}
+}
