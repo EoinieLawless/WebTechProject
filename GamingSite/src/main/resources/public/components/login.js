@@ -1,8 +1,8 @@
-
 export default {
   template: `
-<div class="container d-flex justify-content-center align-items-center" style="height: 75vh;">
-    <div class="card shadow-lg p-4" style="max-width: 450px; width: 100%; border-radius: 12px;">
+<div class="container d-flex justify-content-center align-items-center" 
+     style="height: 100vh; background: url('assets/images/gaming.png') no-repeat center center; background-size: 1000px auto;">
+    <div class="card shadow-lg p-4" style="max-width: 450px; width: 100%; border-radius: 12px; background: rgba(255, 255, 255, 0.85);">
         <div class="text-center mb-4">
             <img src="assets/images/neural.png" alt="Ericsson" class="img-fluid" style="max-height: 80px;">
         </div>
@@ -29,8 +29,6 @@ export default {
         </form>
     </div>
 </div>
-
-
   `,
   data() {
     return {
@@ -41,43 +39,27 @@ export default {
   },
   methods: {
     async handleLogin() {
-		this.isLoading = true;
-		this.errorMessage = '';
-		
-      try {
-        // Use the provided fetch call to authenticate.
-        const response = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: this.username, password: this.password })
-        });
-		
-		if (!response.ok) throw new Error('Invalid username or password');
-
-        if (!response.ok) {
-          // Attempt to parse error details from the response.
-          const errorData = await response.json().catch(() => ({}));
-          this.errorMessage = errorData.error || 'Login failed';
-          return;
+        this.isLoading = true;
+        this.errorMessage = '';
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: this.username, password: this.password })
+            });
+            if (!response.ok) throw new Error('Invalid username or password');
+            const data = await response.json();
+            localStorage.setItem('jwt', data.jwt);
+            localStorage.setItem('username', data.username);
+            localStorage.setItem('role', data.roles.includes('ADMIN') ? 'ADMIN' : 'USER');
+            localStorage.setItem('currentRole', data.roles.includes('ADMIN') ? 'ADMIN' : 'USER');
+            this.$root.changeView(data.roles.includes('ADMIN') ? 'data_import' : 'user_dashboard');
+            window.location.reload();
+        } catch (error) {
+            this.errorMessage = 'Error: ' + error.message;
+        } finally {
+            this.isLoading = false;
         }
-
-        const data = await response.json();
-        // Expecting the response to contain: data.jwt, data.username, and data.roles (an array).
-        localStorage.setItem('jwt', data.jwt);
-        localStorage.setItem('username', data.username);
-        localStorage.setItem('role', data.roles.join(', '));
-        localStorage.setItem('currentRole',data.roles[0]);
-
-
-        // Change the view to data_import (or another appropriate view).
-        this.$root.changeView('data_import');
-        // Reload the page so that global state picks up the new authentication data.
-        window.location.reload();
-      } catch (error) {
-        this.errorMessage = 'Error: ' + error.message;
-      } finally {
-	    this.isLoading = false;
     }
-  }
   }
 };

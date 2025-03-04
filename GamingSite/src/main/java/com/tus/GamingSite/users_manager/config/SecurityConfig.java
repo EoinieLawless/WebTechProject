@@ -18,7 +18,7 @@ import com.tus.GamingSite.users_manager.filter.JwtRequestFilter;
 import com.tus.GamingSite.users_manager.service.UserDetailsServiceImpl;
 
 @Configuration
-@EnableMethodSecurity // Enables method-level security (e.g., @PreAuthorize)
+@EnableMethodSecurity // Enables method-level security
 public class SecurityConfig {
     
     @Autowired
@@ -35,34 +35,16 @@ public class SecurityConfig {
         
         http
           .csrf(csrf -> csrf.disable())
-           // Allow H2 console to be displayed in a frame by disabling frame options
-           .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
-          .exceptionHandling(exception ->
-              exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-          )
-          .sessionManagement(session ->
-              session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-          )
+          .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+          .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+          .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
           .authorizeHttpRequests(auth -> auth
-            
-                // Allow components for specific roles
                 .antMatchers("/components/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/components/customer_service/**").hasAuthority("CUSTOMER_SERVICE_REP")
-                .antMatchers("/components/support_engineer/**").hasAuthority("SUPPORT_ENGINEER")
-                .antMatchers("/components/network_management/**").hasAuthority("NETWORK_MANAGEMENT_ENGINEER")
-                .antMatchers("/components/aside_menu.js").hasAnyAuthority("ADMIN", "NETWORK_MANAGEMENT_ENGINEER")
-
-                // Permit access to the H2 console and login endpoint
-                .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/api/auth/login").permitAll()
-                .antMatchers("/**").permitAll()
-
-
+                .antMatchers("/components/user/**").hasAuthority("USER")
+                .antMatchers("/h2-console/**", "/api/auth/login", "/**").permitAll()
                 .anyRequest().authenticated()
-
           );
         
-        // Add JWT filter before processing username/password authentication.
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         
         return http.build();
@@ -85,5 +67,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

@@ -173,7 +173,7 @@ export default {
       isLoading: false,
       alertMessage: "",
       alertClass: "",
-      availableRoles: ["ADMIN", "CUSTOMER_SERVICE_REP", "SUPPORT_ENGINEER", "NETWORK_MANAGEMENT_ENGINEER"],
+      availableRoles: ["ADMIN", "USER"],
       dataTable: null,
       userIdToDelete: null
     };
