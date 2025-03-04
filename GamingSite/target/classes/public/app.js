@@ -14,6 +14,10 @@ const app = Vue.createApp({
     if (jwt) {
       defaultView = currentRole === 'ADMIN' ? 'data_import' : 'user_dashboard';
     }
+	if (jwt) {
+	      defaultView = currentRole === 'USER' ? 'flappyBird' : 'user_dashboard';
+	    }
+	
 
     return {
       currentView: defaultView,
@@ -64,13 +68,26 @@ const restrictedComponentFiles = {
 	"games/aimTrainer.js",
 	"games/geometryDash.js",
 	"games/pianoTiles.js",
+	"games/typeRacer.js",
+	"games/memoryMatch.js",
+	"games/numSequence.js",
+	"games/wordScramble.js",
+	"games/sudoku.js",
+	"games/mathSpeed.js",
   ],
   USER: [
-    "user/user_dashboard.js",, 
+    "user/user_dashboard.js",
+	"aside_menu.js",
 	"games/flappyBird.js",
 	"games/aimTrainer.js",
 	"games/geometryDash.js",
 	"games/pianoTiles.js",
+	"games/typeRacer.js",
+	"games/memoryMatch.js",
+	"games/numSequence.js",
+	"games/wordScramble.js",
+	"games/sudoku.js",
+	"games/mathSpeed.js",
   ]
 };
 
