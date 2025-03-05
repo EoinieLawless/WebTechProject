@@ -40,7 +40,7 @@ export default {
 		  
 		  <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'flappyBird' ? 'btn-active' : 'btn-success']"
 		          @click="changeView('flappyBird')">
-		    <i class="bi bi-controller"></i>
+		    <i class="bi bi-airplane-fill"></i>
 		    <span class="ms-2" v-if="sidebarOpen">Flappy Bird</span>
 		  </button>
 

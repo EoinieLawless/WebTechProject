@@ -74,6 +74,8 @@ const restrictedComponentFiles = {
 	"games/wordScramble.js",
 	"games/sudoku.js",
 	"games/mathSpeed.js",
+	"analytics/stats.js",
+	"analytics/leaderboard.js",
   ],
   USER: [
     "user/user_dashboard.js",
@@ -88,6 +90,8 @@ const restrictedComponentFiles = {
 	"games/wordScramble.js",
 	"games/sudoku.js",
 	"games/mathSpeed.js",
+	"analytics/stats.js",
+	"analytics/leaderboard.js",
   ]
 };
 
