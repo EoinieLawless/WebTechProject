@@ -49,6 +49,8 @@ public class AuthController {
             this.roles = roles;
         }
     }
+    
+    
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authRequest) throws Exception {

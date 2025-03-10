@@ -60,6 +60,7 @@ INDEX VERSION 1.134+C:\Users\eoini\Desktop\Msc TUS\Semester2\WebTech\GamingSite\
 2657630769.index
 2330918054.index
 3119474203.index
+1865797976.index
 2554247512.index
 3685556998.index
 1670596053.index
@@ -107,7 +108,6 @@ INDEX VERSION 1.134+C:\Users\eoini\Desktop\Msc TUS\Semester2\WebTech\GamingSite\
 967271330.index
 3473174170.index
 3710194386.index
-2319742940.index
 2965456427.index
 316825536.index
 2231260481.index

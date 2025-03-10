@@ -61,7 +61,7 @@ export default {
             new Chart(personalCtx, {
                 type: 'radar',
                 data: {
-                    labels: ["Precision", "Puzzle Solving", "Reaction Time"],
+                    labels: ["Precision", "Puzzle Solving", "Luck"],
                     datasets: [{
                         label: "Personal Stats",
                         data: this.personalStats,
@@ -75,7 +75,7 @@ export default {
             new Chart(globalCtx, {
                 type: 'radar',
                 data: {
-                    labels: ["Precision", "Puzzle Solving", "Reaction Time"],
+                    labels: ["Precision", "Puzzle Solving", "Luck"],
                     datasets: [{
                         label: "Global Average",
                         data: this.globalStats,

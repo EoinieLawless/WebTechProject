@@ -4,11 +4,13 @@ export default {
      style="height: 100vh; background: url('assets/images/gaming.png') no-repeat center center; background-size: 1000px auto;">
     <div class="card shadow-lg p-4" style="max-width: 450px; width: 100%; border-radius: 12px; background: rgba(255, 255, 255, 0.85);">
         <div class="text-center mb-4">
-            <img src="assets/images/neural.png" alt="Ericsson" class="img-fluid" style="max-height: 80px;">
+            <img src="assets/images/neural.png" alt="Gaming Site" class="img-fluid" style="max-height: 80px;">
         </div>
-        <h2 class="text-center text-primary mb-4">Login</h2>
         
-        <form @submit.prevent="handleLogin">
+        <h2 class="text-center text-primary mb-4">{{ isRegistering ? "Register" : "Login" }}</h2>
+
+        <!-- LOGIN FORM -->
+        <form v-if="!isRegistering" @submit.prevent="handleLogin">
             <div class="form-group">
                 <label for="username" class="font-weight-semibold">Username</label>
                 <input type="text" id="username" class="form-control" v-model="username" required placeholder="Enter your username">
@@ -26,14 +28,54 @@ export default {
             <div v-if="errorMessage" class="alert alert-danger mt-3">
                 <strong>Error:</strong> {{ errorMessage }}
             </div>
+
+            <p class="text-center mt-3">
+                Don't have an account? <a href="#" @click="toggleRegister">Register here</a>
+            </p>
         </form>
+
+        <!-- REGISTRATION FORM -->
+        <form v-else @submit.prevent="handleRegister">
+            <div class="form-group">
+                <label for="newUsername" class="font-weight-semibold">Username</label>
+                <input type="text" id="newUsername" class="form-control" v-model="newUsername" required placeholder="Choose a username">
+            </div>
+
+            <div class="form-group mt-3">
+                <label for="newPassword" class="font-weight-semibold">Password</label>
+                <input type="password" id="newPassword" class="form-control" v-model="newPassword" required placeholder="Create a password">
+            </div>
+
+            <div class="form-group mt-3">
+                <label for="confirmPassword" class="font-weight-semibold">Confirm Password</label>
+                <input type="password" id="confirmPassword" class="form-control" v-model="confirmPassword" required placeholder="Confirm your password">
+            </div>
+
+            <button type="submit" class="btn btn-success btn-block mt-4 py-2" :disabled="isLoading">
+                {{ isLoading ? "Registering..." : "Register" }}
+            </button>
+
+            <div v-if="errorMessage" class="alert alert-danger mt-3">
+                <strong>Error:</strong> {{ errorMessage }}
+            </div>
+
+            <p class="text-center mt-3">
+                Already have an account? <a href="#" @click="toggleRegister">Login here</a>
+            </p>
+        </form>
+
     </div>
 </div>
   `,
   data() {
     return {
+      isRegistering: false,
+      isLoading: false,
       username: '',
       password: '',
+      newUsername: '',
+      newPassword: '',
+      confirmPassword: '',
       errorMessage: ''
     };
   },
@@ -60,6 +102,42 @@ export default {
         } finally {
             this.isLoading = false;
         }
+    },
+
+    async handleRegister() {
+        this.isLoading = true;
+        this.errorMessage = '';
+
+        if (this.newPassword !== this.confirmPassword) {
+            this.errorMessage = "Passwords do not match.";
+            this.isLoading = false;
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: this.newUsername, password: this.newPassword })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Registration failed');
+            }
+
+            alert("Registration successful! You can now log in.");
+            this.toggleRegister();
+        } catch (error) {
+            this.errorMessage = 'Error: ' + error.message;
+        } finally {
+            this.isLoading = false;
+        }
+    },
+
+    toggleRegister() {
+        this.isRegistering = !this.isRegistering;
+        this.errorMessage = ''; // Clear any error messages
     }
   }
 };

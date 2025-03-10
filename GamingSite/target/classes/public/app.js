@@ -12,7 +12,7 @@ const app = Vue.createApp({
 		let defaultView = 'login';
 
 		if (jwt) {
-			defaultView = currentRole === 'ADMIN' ? 'data_import' : 'user_dashboard';
+			defaultView = currentRole === 'ADMIN' ? 'data_import' : 'data_import';
 		}
 		if (jwt) {
 			defaultView = currentRole === 'USER' ? 'flappyBird' : 'user_dashboard';

@@ -7214,3 +7214,15 @@ END
 
 !ENTRY org.eclipse.lsp4e 1 0 2025-03-10 15:11:21.504
 !MESSAGE [Info]	Typescript Server version info: {version=5.4.5, source=user-setting}
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-10 15:40:34.982
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/app.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-10 15:40:34.983
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/aside_menu.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-10 15:40:34.987
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/games/pianoTiles.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-10 15:40:34.989
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/analytics/stats.js
