@@ -103,6 +103,29 @@ export default {
     	    <i class="bi bi-calculator"></i>
     	    <span class="ms-2" v-if="sidebarOpen">Speed Math</span>
     	  </button>
+		  
+		  
+		  <!-- Luck-Based Games Section -->
+		  		  
+          <h6 v-if="sidebarOpen" class="text-info">Luck</h6>
+
+          <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'higherOrLower' ? 'btn-active' : 'btn-info']"
+                  @click="changeView('higherOrLower')">
+            <i class="bi bi-arrow-up"></i>
+            <span class="ms-2" v-if="sidebarOpen">Higher Or Lower</span>
+          </button>
+
+          <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'slotMachine' ? 'btn-active' : 'btn-info']"
+                  @click="changeView('slotMachine')">
+            <i class="bi bi-dice-3"></i>
+            <span class="ms-2" v-if="sidebarOpen">Slot Machine</span>
+          </button>
+
+          <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'guessNumber' ? 'btn-active' : 'btn-info']"
+                  @click="changeView('guessNumber')">
+            <i class="bi bi-question-circle"></i>
+            <span class="ms-2" v-if="sidebarOpen">Guess the Number</span>
+          </button>
   
 		  
 		</div>
