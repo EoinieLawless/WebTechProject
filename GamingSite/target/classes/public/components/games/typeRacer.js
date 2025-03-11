@@ -65,6 +65,8 @@ export default {
         startTimer();
         checkCompletion();
       });
+	  
+	  
       
       startGame(); // Automatically start with a new sentence
     }

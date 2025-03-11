@@ -3,13 +3,13 @@ export default {
     <div class="game-container">
       <h2 class="text-center text-primary">Piano Tiles</h2>
       <p class="text-center">Click the black tiles before they reach the bottom!</p>
-      
+
       <button id="startButton" class="btn btn-success" @click="startGame">Start Game</button>
-      
+
       <div class="game-wrapper">
         <canvas id="pianoCanvas" width="400" height="600"></canvas>
       </div>
-      
+
       <p class="text-center">Score: <span id="score">0</span></p>
     </div>
   `,
@@ -21,7 +21,7 @@ export default {
       acceleration: 0.01,
       score: 0,
       columns: [0, 100, 200, 300], // Four columns
-      lastColumn: -1,
+      lastColumns: [],
       animationFrame: null
     };
   },
@@ -30,18 +30,32 @@ export default {
       this.gameRunning = true;
       document.getElementById("startButton").style.display = "none"; // Hide start button
       this.tiles = [];
-      this.speed = 2; // Start slow
+      this.speed = 2;
       this.score = 0;
       document.getElementById("score").innerText = this.score;
+      this.generateInitialTiles(); // Start with tiles already falling
       this.updateGame();
     },
-    createTile() {
-      let availableColumns = this.columns.filter(col => col !== this.lastColumn);
-      let randomColumn = availableColumns[Math.floor(Math.random() * availableColumns.length)];
-      this.lastColumn = randomColumn;
 
-      this.tiles.push({ x: randomColumn, y: 0, width: 100, height: 120 });
+    generateInitialTiles() {
+      this.tiles = [];
+      for (let i = 0; i < 4; i++) {
+        this.createTile(-i * 150); // Tiles start off-screen and fall into view
+      }
     },
+
+    createTile(yPosition = 0) {
+      let availableColumns = this.columns.filter(col => !this.lastColumns.includes(col));
+      let randomColumn = availableColumns[Math.floor(Math.random() * availableColumns.length)];
+
+      if (this.lastColumns.length >= 2) {
+        this.lastColumns.shift(); // Prevent overlapping in consecutive tiles
+      }
+      this.lastColumns.push(randomColumn);
+
+      this.tiles.push({ x: randomColumn, y: yPosition, width: 100, height: 120 });
+    },
+
     updateGame() {
       if (!this.gameRunning) return;
 
@@ -59,8 +73,10 @@ export default {
       // Increase speed gradually
       this.speed += this.acceleration;
 
-      // Periodically add a new tile
-      if (Math.random() < 0.02) this.createTile();
+      // Add new tiles when the last tile reaches a certain point
+      if (this.tiles.length === 0 || this.tiles[this.tiles.length - 1].y > 150) {
+        this.createTile();
+      }
 
       // Draw everything
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -84,12 +100,34 @@ export default {
       // Continue animation loop
       this.animationFrame = requestAnimationFrame(() => this.updateGame());
     },
+
     gameOver() {
       this.gameRunning = false;
       cancelAnimationFrame(this.animationFrame);
+
+      // Save score before showing alert
+      const username = localStorage.getItem("username") || "Guest";
+      this.saveScore(username, this.score);
+
       alert(`Game Over! Final Score: ${this.score}`);
-      document.getElementById("startButton").style.display = "block"; // Show start button again
+      document.getElementById("startButton").style.display = "block"; // Show start button
     },
+
+    async saveScore(username, score) {
+      try {
+        const response = await fetch("http://localhost:9091/api/games/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, game: "Piano Tiles", score })
+        });
+        if (!response.ok) {
+          console.error("Failed to save score");
+        }
+      } catch (error) {
+        console.error("Error saving score:", error);
+      }
+    },
+
     handleTileClick(event) {
       if (!this.gameRunning) return;
 
@@ -108,6 +146,7 @@ export default {
         }
       }
     },
+
     injectStyles() {
       const style = document.createElement("style");
       style.innerHTML = `

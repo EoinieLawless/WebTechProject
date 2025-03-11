@@ -1,6 +1,7 @@
 package com.tus.GamingSite.users_manager.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -83,6 +84,14 @@ public class AuthController {
 
         return ResponseEntity.ok(new AuthResponse(jwt, userDetails.getUsername(), roles));
     }
+    
+    @GetMapping("/currentUser")
+    public ResponseEntity<?> getCurrentUser(@RequestHeader("Authorization") String token) {
+        String username = jwtUtil.extractUsername(token.substring(7)); // Remove "Bearer " from token
+        User user = userService.findByUsername(username);
+        return ResponseEntity.ok(Map.of("username", user.getUsername(), "email", user.getEmail()));
+    }
+
 
     // User Registration Endpoint
     @PostMapping("/register")

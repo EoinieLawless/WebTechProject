@@ -23,11 +23,12 @@ export default {
             <i class="bi bi-file-earmark-text"></i>
             <span class="ms-2" v-if="sidebarOpen">Register Users</span>
           </button>
-          <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'user_complaints' ? 'btn-active' : 'btn-danger']"
-                  @click="changeView('user_complaints')">
+          <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'userComplaintRead' ? 'btn-active' : 'btn-danger']"
+                  @click="changeView('userComplaintRead')">
             <i class="bi bi-exclamation-triangle"></i>
             <span class="ms-2" v-if="sidebarOpen">User Complaints</span>  
           </button>
+		  
         </div>
 
         <!-- Games Section -->
@@ -144,6 +145,11 @@ export default {
             <i class="bi bi-graph-up"></i>
             <span class="ms-2" v-if="sidebarOpen">Stats</span>
           </button>
+		  <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'userComplaintWrite' ? 'btn-active' : 'btn-info']"
+		                    @click="changeView('userComplaintWrite')">
+		              <i class="bi bi-graph-up"></i>
+		              <span class="ms-2" v-if="sidebarOpen">Post Complaint</span>
+            </button>
         </div>
 
       </aside>

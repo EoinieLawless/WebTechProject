@@ -8195,3 +8195,24 @@ java.lang.IllegalArgumentException: Argument not valid
 
 !ENTRY org.eclipse.lsp4e 1 0 2025-03-11 17:30:05.394
 !MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/games/aimTrainer.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-11 20:47:45.493
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/games/pianoTiles.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-11 20:47:45.498
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/games/geometryDash.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-11 20:47:45.503
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/admin/userComplaintRead.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-11 20:47:45.504
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/games/typeRacer.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-11 20:47:45.507
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/analytics/userComplaintWrite.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-11 21:11:00.832
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/aside_menu.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-11 21:11:00.837
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/app.js

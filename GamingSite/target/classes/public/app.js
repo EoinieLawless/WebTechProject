@@ -79,6 +79,8 @@ const restrictedComponentFiles = {
 		"games/higherOrLower.js",
 		"games/guessNumber.js",
 		"games/slotMachine.js",
+		"admin/userComplaintRead.js",
+		"analytics/userComplaintWrite.js",
 	],
 	USER: [
 		"user/user_dashboard.js",
@@ -98,6 +100,7 @@ const restrictedComponentFiles = {
 		"games/higherOrLower.js",
 		"games/guessNumber.js",
 		"games/slotMachine.js",
+		"analytics/userComplaintWrite.js",
 	]
 };
 
