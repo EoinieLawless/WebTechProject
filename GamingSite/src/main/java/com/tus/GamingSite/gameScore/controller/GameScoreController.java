@@ -15,10 +15,12 @@ public class GameScoreController {
     @Autowired
     private GameScoreService gameScoreService;
 
-    // Save score
+    // Save score with gameType
     @PostMapping("/save")
     public ResponseEntity<GameScore> saveScore(@RequestBody GameScore score) {
-        return ResponseEntity.ok(gameScoreService.saveScore(score.getUsername(), score.getGame(), score.getScore()));
+        return ResponseEntity.ok(
+            gameScoreService.saveScore(score.getUsername(), score.getGame(), score.getScore(), score.getGameType())
+        );
     }
 
     // Get scores by game
@@ -31,5 +33,11 @@ public class GameScoreController {
     @GetMapping("/user/{username}")
     public ResponseEntity<List<GameScore>> getScoresByUser(@PathVariable String username) {
         return ResponseEntity.ok(gameScoreService.getScoresByUser(username));
+    }
+
+    // Get scores by game category
+    @GetMapping("/category/{gameType}/scores")
+    public ResponseEntity<List<GameScore>> getScoresByGameType(@PathVariable String gameType) {
+        return ResponseEntity.ok(gameScoreService.getScoresByGameType(gameType));
     }
 }

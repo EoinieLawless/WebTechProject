@@ -22,12 +22,16 @@ public class GameScore {
 
     @Column(nullable = false)
     private int score;
+    
+    @Column(nullable = false)  // New column for game category
+    private String gameType;
 
     public GameScore() {}
 
-    public GameScore(String username, String game, int score) {
+    public GameScore(String username, String game, int score, String gameType) {
         this.username = username;
         this.game = game;
         this.score = score;
+        this.gameType = gameType;
     }
 }

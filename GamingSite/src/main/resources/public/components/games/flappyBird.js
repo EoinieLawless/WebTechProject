@@ -34,7 +34,7 @@ export default {
           const response = await fetch("http://localhost:9091/api/games/save", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username: username, game: "Flappy Bird", score: score })
+            body: JSON.stringify({ username: username, game: "Flappy Bird", score: score, gameType: "Precision" })
           });
           if (!response.ok) {
             console.error("Failed to save score");

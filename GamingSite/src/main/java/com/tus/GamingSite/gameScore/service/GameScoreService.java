@@ -12,8 +12,8 @@ public class GameScoreService {
     @Autowired
     private GameScoreRepository gameScoreRepository;
 
-    public GameScore saveScore(String username, String game, int score) {
-        GameScore newScore = new GameScore(username, game, score);
+    public GameScore saveScore(String username, String game, int score, String gameType) {
+        GameScore newScore = new GameScore(username, game, score, gameType);
         return gameScoreRepository.save(newScore);
     }
 
@@ -23,5 +23,9 @@ public class GameScoreService {
 
     public List<GameScore> getScoresByUser(String username) {
         return gameScoreRepository.findByUsername(username);
+    }
+    
+    public List<GameScore> getScoresByGameType(String gameType) {
+        return gameScoreRepository.findByGameType(gameType);
     }
 }

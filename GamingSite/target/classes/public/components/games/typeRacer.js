@@ -28,7 +28,7 @@ export default {
       const sentenceElement = document.getElementById("sentence");
       const typingArea = document.getElementById("typingArea");
       const timerElement = document.getElementById("timer");
-      
+
       let startTime = null;
       let timerInterval = null;
       
@@ -52,11 +52,37 @@ export default {
         }
       }
 
+      async function saveScore(username, time) {
+        try {
+          const response = await fetch("http://localhost:9091/api/games/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+              username: username, 
+              game: "Type Racer", 
+              score: parseFloat(time),
+              gameType: "Precision" 
+            })
+          });
+
+          if (!response.ok) {
+            console.error("Failed to save score");
+          }
+        } catch (error) {
+          console.error("Error saving score:", error);
+        }
+      }
+
       function checkCompletion() {
         if (typingArea.value.trim() === sentenceElement.textContent.trim()) {
           clearInterval(timerInterval);
           typingArea.disabled = true;
-          alert(`Finished! Your time: ${timerElement.textContent} seconds`);
+
+          const timeTaken = timerElement.textContent;
+          const username = localStorage.getItem("username") || "Guest";
+          saveScore(username, timeTaken);
+
+          alert(`Finished! Your time: ${timeTaken} seconds`);
           setTimeout(startGame, 2000); // Restart game after a short delay
         }
       }
@@ -65,9 +91,7 @@ export default {
         startTimer();
         checkCompletion();
       });
-	  
-	  
-      
+
       startGame(); // Automatically start with a new sentence
     }
   }
