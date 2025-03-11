@@ -27,6 +27,7 @@ public class AdminController {
             );
         }
         return userService.registerUser(user);
+        
     }
 
     // Get all users (secured for ADMIN)

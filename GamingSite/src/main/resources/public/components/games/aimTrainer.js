@@ -12,7 +12,6 @@ export default {
     return {
       score: 0,
       timeLeft: 15,
-      gameInterval: null,
       timerInterval: null,
       gameActive: false
     };
@@ -25,12 +24,10 @@ export default {
       const canvas = document.getElementById("aimCanvas");
       const ctx = canvas.getContext("2d");
       let target = { x: 100, y: 100, radius: 20 };
-      let startTime;
 
       const spawnTarget = () => {
         target.x = Math.random() * (canvas.width - 40) + 20;
         target.y = Math.random() * (canvas.height - 40) + 20;
-        startTime = Date.now();
         draw();
       };
 
@@ -75,9 +72,31 @@ export default {
           this.timeLeft--;
         } else {
           clearInterval(this.timerInterval);
-          this.gameActive = false;
+          this.endGame();
         }
       }, 1000);
+    },
+
+    async saveScore(username, score) {
+      try {
+        const response = await fetch("http://localhost:9091/api/games/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, game: "Aim Trainer", score })
+        });
+        if (!response.ok) {
+          console.error("Failed to save score");
+        }
+      } catch (error) {
+        console.error("Error saving score:", error);
+      }
+    },
+
+    endGame() {
+      this.gameActive = false;
+      const username = localStorage.getItem("username") || "Guest";
+      this.saveScore(username, this.score);
+      alert(`Game Over! Final Score: ${this.score}`);
     }
   }
 };
