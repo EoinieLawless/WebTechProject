@@ -35,34 +35,36 @@ export default {
         </form>
 
         <!-- REGISTRATION FORM -->
-        <form v-else @submit.prevent="handleRegister">
-            <div class="form-group">
-                <label for="newUsername" class="font-weight-semibold">Username</label>
-                <input type="text" id="newUsername" class="form-control" v-model="newUsername" required placeholder="Choose a username">
-            </div>
+		<form v-else @submit.prevent="handleRegister">
+		    <div class="form-group">
+		        <label for="newUsername" class="font-weight-semibold">Username</label>
+		        <input type="text" id="newUsername" class="form-control" v-model="newUsername" required placeholder="Choose a username">
+		    </div>
 
-            <div class="form-group mt-3">
-                <label for="newPassword" class="font-weight-semibold">Password</label>
-                <input type="password" id="newPassword" class="form-control" v-model="newPassword" required placeholder="Create a password">
-            </div>
+		    <div class="form-group mt-3">
+		        <label for="email" class="font-weight-semibold">Email</label>
+		        <input type="email" id="email" class="form-control" v-model="email" required placeholder="Enter your email">
+		    </div>
 
-            <div class="form-group mt-3">
-                <label for="confirmPassword" class="font-weight-semibold">Confirm Password</label>
-                <input type="password" id="confirmPassword" class="form-control" v-model="confirmPassword" required placeholder="Confirm your password">
-            </div>
+		    <div class="form-group mt-3">
+		        <label for="newPassword" class="font-weight-semibold">Password</label>
+		        <input type="password" id="newPassword" class="form-control" v-model="newPassword" required placeholder="Create a password">
+		    </div>
 
-            <button type="submit" class="btn btn-success btn-block mt-4 py-2" :disabled="isLoading">
-                {{ isLoading ? "Registering..." : "Register" }}
-            </button>
+		    <div class="form-group mt-3">
+		        <label for="confirmPassword" class="font-weight-semibold">Confirm Password</label>
+		        <input type="password" id="confirmPassword" class="form-control" v-model="confirmPassword" required placeholder="Confirm your password">
+		    </div>
 
-            <div v-if="errorMessage" class="alert alert-danger mt-3">
-                <strong>Error:</strong> {{ errorMessage }}
-            </div>
+		    <button type="submit" class="btn btn-success btn-block mt-4 py-2" :disabled="isLoading">
+		        {{ isLoading ? "Registering..." : "Register" }}
+		    </button>
 
-            <p class="text-center mt-3">
-                Already have an account? <a href="#" @click="toggleRegister">Login here</a>
-            </p>
-        </form>
+		    <div v-if="errorMessage" class="alert alert-danger mt-3">
+		        <strong>Error:</strong> {{ errorMessage }}
+		    </div>
+		</form>
+
 
     </div>
 </div>
@@ -104,36 +106,40 @@ export default {
         }
     },
 
-    async handleRegister() {
-        this.isLoading = true;
-        this.errorMessage = '';
+	async handleRegister() {
+	    this.isLoading = true;
+	    this.errorMessage = '';
 
-        if (this.newPassword !== this.confirmPassword) {
-            this.errorMessage = "Passwords do not match.";
-            this.isLoading = false;
-            return;
-        }
+	    if (this.newPassword !== this.confirmPassword) {
+	        this.errorMessage = "Passwords do not match.";
+	        this.isLoading = false;
+	        return;
+	    }
 
-        try {
-            const response = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: this.newUsername, password: this.newPassword })
-            });
+	    try {
+	        const response = await fetch('/api/auth/register', {
+	            method: 'POST',
+	            headers: { 'Content-Type': 'application/json' },
+	            body: JSON.stringify({ 
+	                username: this.newUsername, 
+	                password: this.newPassword, 
+	                email: this.email 
+	            })
+	        });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Registration failed');
-            }
+	        if (!response.ok) {
+	            const errorData = await response.json();
+	            throw new Error(errorData.message || 'Registration failed');
+	        }
 
-            alert("Registration successful! You can now log in.");
-            this.toggleRegister();
-        } catch (error) {
-            this.errorMessage = 'Error: ' + error.message;
-        } finally {
-            this.isLoading = false;
-        }
-    },
+	        alert("Registration successful! You can now log in.");
+	        this.toggleRegister();
+	    } catch (error) {
+	        this.errorMessage = 'Error: ' + error.message;
+	    } finally {
+	        this.isLoading = false;
+	    }
+	},
 
     toggleRegister() {
         this.isRegistering = !this.isRegistering;

@@ -28,6 +28,7 @@ public class DataInitializer implements CommandLineRunner {
             admin.setUsername(declareAdmin);
             // Change the default password as needed for your environment
             admin.setPassword(passwordEncoder.encode(declareAdmin));
+            admin.setEmail("admin@example.com");
             admin.setRoles(Set.of(Role.ADMIN));
             
             userRepository.save(admin);

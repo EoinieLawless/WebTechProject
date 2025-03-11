@@ -1,6 +1,7 @@
 package com.tus.GamingSite.users_manager.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.tus.GamingSite.users_manager.model.Role;
 import com.tus.GamingSite.users_manager.model.User;
 import com.tus.GamingSite.users_manager.repository.UserRepository;
 import com.tus.GamingSite.users_manager.exceptions.UsernameAlreadyExistsException;
@@ -27,6 +29,10 @@ public class UserService {
         }
         // Encrypt the password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // Assign default role as USER
+        user.setRoles(Set.of(Role.USER));
+
         return userRepository.save(user);
     }
 

@@ -38,6 +38,20 @@ export default {
                   >
                 </div>
               </div>
+			  
+			  <!-- Email Field -->
+			  <div class="col-md-4">
+			      <div class="form-group">
+			          <input 
+			              type="email" 
+			              class="form-control" 
+			              placeholder="Email"
+			              v-model="email" 
+			              required
+			          >
+			      </div>
+			  </div>
+
 
               <!-- Roles Selection -->
               <div class="col-md-4">
@@ -211,14 +225,20 @@ export default {
       this.alertMessage = "";
 
       try {
-        const response = await fetch("/api/admin/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-          },
-          body: JSON.stringify({ username: this.username, password: this.password, roles: this.selectedRoles })
-        });
+		const response = await fetch("/api/admin/register", {
+		    method: "POST",
+		    headers: {
+		        "Content-Type": "application/json",
+		        "Authorization": `Bearer ${localStorage.getItem('jwt')}`
+		    },
+		    body: JSON.stringify({ 
+		        username: this.username, 
+		        password: this.password, 
+		        email: this.email, 
+		        roles: this.selectedRoles 
+		    })
+		});
+
 
         if (response.ok) {
           this.showAlert("Registration successful!", "alert-success");
