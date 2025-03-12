@@ -35,6 +35,21 @@ export default {
         }
       }
       
+      async function saveScore(username, moves, time) {
+        try {
+          const response = await fetch("http://localhost:9091/api/games/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: username, game: "Memory Match", score: time, gameType: "Puzzle" })
+          });
+          if (!response.ok) {
+            console.error("Failed to save score");
+          }
+        } catch (error) {
+          console.error("Error saving score:", error);
+        }
+      }
+      
       function createCard(symbol) {
         let card = document.createElement("div");
         card.classList.add("card");
@@ -68,7 +83,10 @@ export default {
               secondCard = null;
               if (matches === symbols.length / 2) {
                 clearInterval(timerInterval);
-                alert(`You won! Time: ${timerElement.textContent} seconds, Moves: ${moves}`);
+                const finalTime = parseFloat(timerElement.textContent);
+                const username = localStorage.getItem("username") || "Guest";
+                saveScore(username, moves, finalTime);
+                alert(`You won! Time: ${finalTime} seconds, Moves: ${moves}`);
                 setTimeout(initGame, 2000);
               }
             } else {

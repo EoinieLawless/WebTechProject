@@ -28,6 +28,21 @@ export default {
         return word.split("").sort(() => Math.random() - 0.5).join("");
       }
       
+      async function saveScore(username, time) {
+        try {
+          const response = await fetch("http://localhost:9091/api/games/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: username, game: "Word Scramble", score: time, gameType: "Puzzle" })
+          });
+          if (!response.ok) {
+            console.error("Failed to save score");
+          }
+        } catch (error) {
+          console.error("Error saving score:", error);
+        }
+      }
+      
       function startGame() {
         correctWord = words[Math.floor(Math.random() * words.length)];
         wordElement.textContent = scrambleWord(correctWord);
@@ -51,7 +66,10 @@ export default {
         if (userInput.value.toLowerCase() === correctWord) {
           clearInterval(timerInterval);
           userInput.disabled = true;
-          alert(`Correct! Time: ${timerElement.textContent} seconds`);
+          const finalTime = parseFloat(timerElement.textContent);
+          const username = localStorage.getItem("username") || "Guest";
+          saveScore(username, finalTime);
+          alert(`Correct! Time: ${finalTime} seconds`);
           setTimeout(startGame, 2000);
         }
       }

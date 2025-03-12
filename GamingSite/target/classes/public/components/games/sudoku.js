@@ -41,6 +41,21 @@ export default {
         return baseBoard;
       }
       
+      async function saveScore(username, time) {
+        try {
+          const response = await fetch("http://localhost:9091/api/games/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: username, game: "Sudoku Time Attack", score: time, gameType: "Puzzle" })
+          });
+          if (!response.ok) {
+            console.error("Failed to save score");
+          }
+        } catch (error) {
+          console.error("Error saving score:", error);
+        }
+      }
+      
       function startGame() {
         board = generateSudoku();
         boardElement.innerHTML = "";
@@ -95,7 +110,10 @@ export default {
         
         if (isCorrect) {
           clearInterval(timerInterval);
-          alert(`You solved it! Time: ${timerElement.textContent} seconds`);
+          const finalTime = parseFloat(timerElement.textContent);
+          const username = localStorage.getItem("username") || "Guest";
+          saveScore(username, finalTime);
+          alert(`You solved it! Time: ${finalTime} seconds`);
           setTimeout(startGame, 2000);
         }
       }

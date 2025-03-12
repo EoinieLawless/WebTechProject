@@ -31,6 +31,21 @@ export default {
         return numbers;
       }
       
+      async function saveScore(username, time) {
+        try {
+          const response = await fetch("http://localhost:9091/api/games/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: username, game: "Number Sequence Challenge", score: time, gameType: "Puzzle" })
+          });
+          if (!response.ok) {
+            console.error("Failed to save score");
+          }
+        } catch (error) {
+          console.error("Error saving score:", error);
+        }
+      }
+      
       function startGame() {
         sequence = generateSequence(6);
         sequenceElement.textContent = sequence;
@@ -59,7 +74,10 @@ export default {
         if (userInput.value === sequence) {
           clearInterval(timerInterval);
           userInput.disabled = true;
-          alert(`Correct! Time: ${timerElement.textContent} seconds`);
+          const finalTime = parseFloat(timerElement.textContent);
+          const username = localStorage.getItem("username") || "Guest";
+          saveScore(username, finalTime);
+          alert(`Correct! Time: ${finalTime} seconds`);
           setTimeout(startGame, 2000);
         }
       }
