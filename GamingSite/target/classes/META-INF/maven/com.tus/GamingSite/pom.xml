@@ -111,6 +111,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.9.0</version>
+		</dependency>
+
+
 		<!-- JUnit Platform Commons -->
 		<dependency>
 			<groupId>org.junit.platform</groupId>

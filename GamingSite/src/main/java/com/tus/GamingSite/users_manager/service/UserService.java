@@ -47,9 +47,29 @@ public class UserService {
 
 
     public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        if (user.getRoles().contains(Role.ADMIN)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Admin cannot be deleted");
         }
+
         userRepository.deleteById(id);
     }
+
+    public User updateUser(Long id, User updatedUser) {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        if (user.getRoles().contains(Role.ADMIN)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Admin cannot be edited");
+        }
+
+        user.setUsername(updatedUser.getUsername());
+        user.setEmail(updatedUser.getEmail());
+        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+
+        return userRepository.save(user);
+    }
+
 }

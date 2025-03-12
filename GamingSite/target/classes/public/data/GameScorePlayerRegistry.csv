@@ -1,0 +1,8 @@
+ID,EMAIL,PASSWORD,USERNAME,ROLE
+2,Stephen@gmail.com,$2a$10$Q49KVUxaCRo3t19N2L8PkOtI5zsAplI6vceCxKjzMrCimgC38PJwS,Stephen,USER
+3,Ella@gmail.com,$2a$10$J.Wj3T0Wg1C5tz82ZfrjsOfbp.fPAXjXOyO.5IyaJnp3TWt/09z3i,Ella,USER
+4,Aaron@gmail.com,$2a$10$p93Knaq.vbgANClE1H10mu3auAL.7JiluSwVKbD1A3lXEPtVmady2,Aaron,USER
+5,Mohamed@gmail.com,$2a$10$VQZWudPpXwM34ztmdjIlvOy6.VtuksfDiTJJLotmgupNXc24kG6N.,Mohamed,USER
+6,Eoin@gmail.com,$2a$10$Z42cY05RT0S4wvCDCNobd./IP1zuiaqPZo2B27iv7T4EQwOR/llWa,Eoin,USER
+7,Dylan@gmail.com,$2a$10$TYhf36LXfa1VZYP51PtI8uwBie9wMdCwKCVi.CeYMO2We9ZKdk2S.,Dylan,USER
+8,Rane@gmail.com,$2a$10$/GQ7E5VwPqbUGFQfHk2Dvunf9ihiw4t6fjH59If0s9KIsEpsMRTJG,Rane,USER
