@@ -3,24 +3,21 @@ export default {
     <div class="game-container">
       <h2 class="text-center text-primary">Higher or Lower</h2>
       <p class="text-center text-secondary">Guess if the next card is higher or lower!</p>
-	  <p class="text-center text-secondary">The cards are from 1 to 20</p>
-	  <p class="text-center text-secondary">Try and go on a winning streak!!!</p>
+      <p class="text-center text-secondary">The cards are from 1 to 20</p>
+      <p class="text-center text-secondary">Try and go on a winning streak!!!</p>
       
-      <!-- Card Layout -->
       <div class="card-container">
         <div class="card" :class="{ 'faded': !prevCard }">{{ prevCard || "?" }}</div>
         <div class="card active">{{ currentCard }}</div>
         <div class="card" :class="{ 'hidden-card': !revealNext }">{{ revealNext ? nextCard : "?" }}</div>
       </div>
 
-      <!-- Controls -->
       <div class="controls" v-if="!gameOver">
         <button class="btn btn-success" @click="makeGuess('higher')" :disabled="cooldown">Higher</button>
         <button class="btn btn-danger" @click="makeGuess('lower')" :disabled="cooldown">Lower</button>
       </div>
 
-      <!-- Messages -->
-      <p class="message text-danger" v-if="gameOver">Failed! Try again in <span id="countdown">5</span> seconds...</p>
+      <p class="message text-danger" v-if="gameOver">Incorrect! Streak is Lost, Try again in <span id="countdown">5</span> seconds...</p>
       <p class="text-secondary">Score: {{ score }}</p>
     </div>
   `,
@@ -41,6 +38,21 @@ export default {
     this.injectStyles();
   },
   methods: {
+    async saveScore(username, score) {
+      try {
+        const response = await fetch("http://localhost:9091/api/games/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: username, game: "Higher or Lower", score: score, gameType: "Luck" })
+        });
+        if (!response.ok) {
+          console.error("Failed to save score");
+        }
+      } catch (error) {
+        console.error("Error saving score:", error);
+      }
+    },
+    
     initGame() {
       this.deck = this.generateDeck();
       this.prevCard = null;
@@ -51,19 +63,23 @@ export default {
       this.cooldown = false;
       this.revealNext = false;
     },
+    
     generateDeck() {
       let deck = [];
-      for (let i = 1; i <= 20; i++) { // Numbers between 1 and 20
+      for (let i = 1; i <= 20; i++) {
         deck.push(i);
       }
       return this.shuffle(deck);
     },
+    
     shuffle(array) {
       return array.sort(() => Math.random() - 0.5);
     },
+    
     drawCard() {
       return this.deck.length > 0 ? this.deck.pop() : this.generateDeck().pop();
     },
+    
     makeGuess(choice) {
       this.revealNext = true;
       setTimeout(() => {
@@ -79,10 +95,13 @@ export default {
           this.revealNext = false;
         } else {
           this.gameOver = true;
+          const username = localStorage.getItem("username") || "Guest";
+          this.saveScore(username, this.score);
           this.startCooldown();
         }
       }, 1000);
     },
+    
     startCooldown() {
       this.cooldown = true;
       let countdown = 5;
@@ -95,6 +114,7 @@ export default {
         countdown--;
       }, 1000);
     },
+    
     injectStyles() {
       const style = document.createElement("style");
       style.innerHTML = `
