@@ -40,24 +40,40 @@ export default {
     
     data() {
         return {
-            username: authState.username , 
-            mostPlayedGame: "Geometry Dash",
-            bestScore: 1200,
-            leaderboardRank: 15,
-            personalStats: [85, 90, 70],
-            globalStats: [75, 80, 65],
+            username: localStorage.getItem("username") || "Guest",
+            mostPlayedGame: "Loading...",
+            bestScore: "Loading...",
+            leaderboardRank: "Loading...",
+            personalStats: [],
+            globalStats: [],
         };
     },
-    
+
     mounted() {
-        this.renderCharts();
+        this.fetchStats();
     },
-    
+
     methods: {
+        async fetchStats() {
+            try {
+                const response = await fetch(`http://localhost:9091/api/personalStats/${this.username}`);
+                if (!response.ok) throw new Error("Failed to fetch stats");
+                const data = await response.json();
+                this.mostPlayedGame = data.mostPlayedGame || "N/A";
+                this.bestScore = data.bestScore || 0;
+                this.leaderboardRank = data.leaderboardRank || "N/A";
+                this.personalStats = data.personalStats || [0, 0, 0];
+                this.globalStats = data.globalStats || [0, 0, 0];
+                this.renderCharts();
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
         renderCharts() {
             const personalCtx = this.$refs.personalRadarChart.getContext("2d");
             const globalCtx = this.$refs.globalRadarChart.getContext("2d");
-            
+
             new Chart(personalCtx, {
                 type: 'radar',
                 data: {
@@ -71,7 +87,7 @@ export default {
                     }]
                 }
             });
-            
+
             new Chart(globalCtx, {
                 type: 'radar',
                 data: {

@@ -9489,3 +9489,96 @@ java.lang.UnsupportedOperationException: No language server has registered to ha
 
 !ENTRY org.eclipse.lsp4e 1 0 2025-03-12 18:59:17.661
 !MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/admin/userComplaintRead.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 19:03:57.667
+!MESSAGE [Info]	ESLint server running in node v20.13.1
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 19:05:32.038
+!MESSAGE The given URI https://jakarta.ee/xml/ns/jakartaee/application-client_9.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 19:05:32.039
+!MESSAGE The given URI https://jakarta.ee/xml/ns/jakartaee/jobXML_2_0.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 19:05:32.039
+!MESSAGE The given URI https://jakarta.ee/xml/ns/jakartaee/beans_3_0.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 19:05:32.040
+!MESSAGE The given URI https://jakarta.ee/xml/ns/jaxb/bindingschema_3_0.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 19:05:32.044
+!MESSAGE The given URI https://jakarta.ee/xml/ns/validation/validation-configuration-3.0.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 19:05:32.046
+!MESSAGE The given URI http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_1.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 21:24:52.984
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/aside_menu.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 21:24:52.984
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/navbar.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 21:24:52.986
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/app.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 21:24:52.991
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/games/geometryDash.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 21:24:52.996
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/games/higherOrLower.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 21:24:52.997
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/admin/data_import.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 21:24:52.998
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/games/typeRacer.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 21:24:52.998
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/games/pianoTiles.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 21:26:48.910
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/analytics/leaderboard.js
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 21:32:48.867
+!MESSAGE The given URI https://jakarta.ee/xml/ns/jakartaee/application-client_9.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 21:32:48.868
+!MESSAGE The given URI https://jakarta.ee/xml/ns/jakartaee/jobXML_2_0.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 21:32:48.869
+!MESSAGE The given URI https://jakarta.ee/xml/ns/jakartaee/beans_3_0.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 21:32:48.870
+!MESSAGE The given URI https://jakarta.ee/xml/ns/jaxb/bindingschema_3_0.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 21:32:48.873
+!MESSAGE The given URI https://jakarta.ee/xml/ns/validation/validation-configuration-3.0.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 21:32:48.875
+!MESSAGE The given URI http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_1.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 21:32:54.968
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/admin/data_import.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 21:54:54.666
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/analytics/stats.js
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 22:06:27.978
+!MESSAGE The given URI https://jakarta.ee/xml/ns/jakartaee/application-client_9.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 22:06:27.979
+!MESSAGE The given URI https://jakarta.ee/xml/ns/jakartaee/jobXML_2_0.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 22:06:27.979
+!MESSAGE The given URI https://jakarta.ee/xml/ns/jakartaee/beans_3_0.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 22:06:27.979
+!MESSAGE The given URI https://jakarta.ee/xml/ns/jaxb/bindingschema_3_0.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 22:06:27.984
+!MESSAGE The given URI https://jakarta.ee/xml/ns/validation/validation-configuration-3.0.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-12 22:06:27.986
+!MESSAGE The given URI http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_1.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-12 22:06:28.276
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/GamingSite/WebTechProject/GamingSite/src/main/resources/public/components/login.js

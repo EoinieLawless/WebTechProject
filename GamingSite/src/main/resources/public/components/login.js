@@ -3,9 +3,7 @@ export default {
 <div class="container d-flex justify-content-center align-items-center" 
      style="height: 100vh; background: url('assets/images/gaming.png') no-repeat center center; background-size: 1000px auto;">
     <div class="card shadow-lg p-4" style="max-width: 450px; width: 100%; border-radius: 12px; background: rgba(255, 255, 255, 0.85);">
-        <div class="text-center mb-4">
-            <img src="assets/images/neural.png" alt="Gaming Site" class="img-fluid" style="max-height: 80px;">
-        </div>
+        
         
         <h2 class="text-center text-primary mb-4">{{ isRegistering ? "Register" : "Login" }}</h2>
 
@@ -59,6 +57,10 @@ export default {
 		    <button type="submit" class="btn btn-success btn-block mt-4 py-2" :disabled="isLoading">
 		        {{ isLoading ? "Registering..." : "Register" }}
 		    </button>
+			
+			<p class="text-center mt-3">
+			                Already have an account? <a href="#" @click="toggleRegister">Back to Login</a>
+			            </p>
 
 		    <div v-if="errorMessage" class="alert alert-danger mt-3">
 		        <strong>Error:</strong> {{ errorMessage }}

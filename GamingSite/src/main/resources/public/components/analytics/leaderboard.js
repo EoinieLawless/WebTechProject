@@ -1,213 +1,201 @@
 export default {
-    template: `
-     <div class="container mt-5">
-  <div class="card shadow-sm border-0">
-    <div class="card-body p-4">
-      <!-- Header -->
-      <div class="d-flex align-items-center justify-content-between mb-4">
-        <div>
-          <h2 class="fw-bold text-primary mb-1">File Upload System</h2>
-          <p class="text-muted  mb-0">Upload your sample file for processing</p>
-        </div>
-        <button 
-          class="btn btn-primary d-flex align-items-center gap-2" 
-          @click="uploadData" 
-          :disabled="isUploading"
-        >
-          <i class="bi bi-cloud-upload"></i>
-          <span>{{ isUploading ? "Uploading..." : "Upload File" }}</span>
-        </button>
+  template: `
+    <div class="leaderboard-container">
+      <h2 class="leaderboard-title">Leaderboard</h2>
+
+      <div class="toggle-buttons">
+        <button class="leaderboard-btn" @click="showTopPlayers = true" :class="{ active: showTopPlayers }">Top Players</button>
+        <button class="leaderboard-btn" @click="showTopPlayers = false" :class="{ active: !showTopPlayers }">Most Active Players</button>
       </div>
 
-      <!-- Progress Bar -->
-      <div v-if="isUploading">
-        <div class="d-flex justify-content-between  text-muted mb-1">
-          <span>Uploading file...</span>
-          <span>{{ progress }}%</span>
+      <!-- Top Players Leaderboard -->
+      <div v-if="showTopPlayers">
+        <div class="game-selection">
+          <label for="game">Select a Game:</label>
+          <select v-model="selectedGame" @change="fetchTopPlayers">
+            <option v-for="game in games" :key="game" :value="game">{{ game }}</option>
+          </select>
         </div>
-        <div class="progress" style="height: 6px;">
-          <div class="progress-bar bg-primary" 
-               role="progressbar" 
-               :style="{ width: progress + '%' }">
-          </div>
-        </div>
+
+        <h3 class="leaderboard-heading">Top Players for {{ selectedGame }}</h3>
+        <ul class="leaderboard-list">
+          <li v-for="(player, index) in topPlayers" :key="player.id">
+            <span class="rank">
+              <span v-if="index === 0">🥇</span>
+              <span v-else-if="index === 1">🥈</span>
+              <span v-else-if="index === 2">🥉</span>
+              <span v-else>#{{ index + 1 }}</span>
+            </span>
+            {{ player.username }} - Score: {{ player.score }}
+          </li>
+        </ul>
       </div>
 
-      <!-- Status Alert -->
-      <div v-if="alertMessage" :class="['alert', alertClass, 'mt-3 mb-0 d-flex align-items-center']" role="alert">
-        <i :class="['bi', alertClass === 'alert-success' ? 'bi-check-circle' : 'bi-exclamation-circle', 'me-2']"></i>
-        {{ alertMessage }}
-      </div>
-
-      <!-- Error Records Summary -->
-      <div v-if="errorRecordsMessage" class="mt-3 p-3 border rounded-3 bg-light">
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="d-flex align-items-center gap-3">
-            <div class="p-2 rounded-circle bg-warning bg-opacity-10">
-              <i class="bi bi-exclamation-triangle text-warning"></i>
-            </div>
-            <div>
-              <h6 class="mb-1 fw-semibold">Processing Summary</h6>
-              <p class="mb-0 text-muted">
-                <span class="fw-semibold text-warning">{{ errorCount }}</span> erroneous records found
-              </p>
-            </div>
-          </div>
-          <button 
-            @click="downloadErrorLog"
-            class="btn btn-outline-primary d-flex align-items-center gap-2"
-          >
-            <i class="bi bi-download"></i>
-            <span>Download Log</span>
-          </button>
-        </div>
+      <!-- Most Active Players Leaderboard -->
+      <div v-else>
+        <h3 class="leaderboard-heading">Most Active Players</h3>
+        <ul class="leaderboard-list">
+          <li v-for="(player, index) in mostActivePlayers" :key="player">
+            <span class="rank">
+              <span v-if="index === 0">🥇</span>
+              <span v-else-if="index === 1">🥈</span>
+              <span v-else-if="index === 2">🥉</span>
+              <span v-else>#{{ index + 1 }}</span>
+            </span>
+            {{ player }}
+          </li>
+        </ul>
       </div>
     </div>
-  </div>
-</div>
-
-    `,
-
-    data() {
-        return {
-            fileName: "SampleData.xls", // Name of the file to upload
-            isUploading: false, // Flag to indicate if the upload is in progress
-            progress: 0, // Progress percentage
-            intervalId: null, // ID for the progress simulation interval
-            alertMessage: "", // Message to display as an alert
-            alertClass: "", // Class to style the alert (e.g., success, danger)
-            errorRecordsMessage: "", // Message showing error details
-            errorCount: 0, // Number of erroneous records
-        };
+  `,
+  data() {
+    return {
+		games: [
+		        "Flappy Bird",
+		        "Aim Trainer",
+		        "Memory Match",
+		        "Higher or Lower",
+		        "Slot Machine",
+		        "Geometry Dash",
+		        "Piano Tiles",
+		        "Number Sequence Challenge",
+		        "Sudoku Time Attack",
+		        "Type Racer",
+		        "Word Scramble",
+		        "Lucky Number Guess",
+		        "Math Speed"
+		      ],
+      selectedGame: "Piano Tiles",
+      topPlayers: [],
+      mostActivePlayers: [],
+      showTopPlayers: true 
+    };
+  },
+  mounted() {
+    this.addScopedStyles();
+    this.fetchTopPlayers();
+    this.fetchMostActivePlayers();
+  },
+  methods: {
+    async fetchTopPlayers() {
+      try {
+        const response = await fetch(`http://localhost:9091/api/leaderboard/${this.selectedGame}`);
+        if (!response.ok) throw new Error("Failed to fetch leaderboard");
+        this.topPlayers = await response.json();
+      } catch (error) {
+        console.error(error);
+      }
     },
-
-    methods: {
-        async uploadData() {
-            this.isUploading = true;
-            this.progress = 0;
-            this.alertMessage = "";
-            this.errorRecordsMessage = "";
-            this.startProgressSimulation();
-
-            let formData = new FormData();
-            formData.append("fileName", this.fileName);
-
-            try {
-                const jwt = localStorage.getItem('jwt');
-
-                    if (!jwt) {
-                        alert('You are not logged in');
-                        return;
-                    }
-                
-                const response = await fetch("/api/admin/files/import", {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        "Accept": "application/json",
-                        'Authorization': `Bearer ${jwt}`  // Add JWT to Authorization header
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    this.progress = 100;
-                    clearInterval(this.intervalId);
-
-                    setTimeout(() => {
-                        this.showAlert(data.status, "alert-success");
-                        this.errorCount = data.errorCount; // Set the error count
-                        if (this.errorCount > 0) {
-                            this.errorRecordsMessage = `Click the link to download the error log. ${this.errorCount} erroneous records found.`;
-                        } else {
-                            this.errorRecordsMessage = "No errors found. All records processed successfully.";
-                        }
-                        this.isUploading = false;
-                    }, 500);
-                } else {
-                    const errorMessage = await response.text();
-                    this.showAlert("Error: " + errorMessage, "alert-danger");
-                    this.resetProgress();
-                }
-            } catch (error) {
-                this.showAlert("Error processing file: " + error.message, "alert-danger");
-                this.resetProgress();
-            }
-        },
-
-        async downloadErrorLog() {
-            try {
-                const jwt = localStorage.getItem('jwt');
-
-                    if (!jwt) {
-                        alert('You are not logged in');
-                        return;
-                    }
-                const response = await fetch("/api/admin/files/download-error-log", {
-                    method: "POST",
-                    headers: {
-                        'Authorization': `Bearer ${jwt}`  // Add JWT to Authorization header
-                    }
-                });
-
-                if (response.ok) {
-                    const blob = await response.blob();
-                    const url = window.URL.createObjectURL(blob);
-
-                    const a = document.createElement("a");
-                    a.href = url;
-                    a.download = "error-log-file.xlsx"; // Name of the downloaded file
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-
-                    window.URL.revokeObjectURL(url);
-                } else {
-                    this.showAlert("No error log available to download.", "alert-warning");
-                }
-            } catch (error) {
-                console.error("Error downloading error log:", error);
-                this.showAlert("Error downloading error log file.", "alert-danger");
-            }
-        },
-
-        startProgressSimulation() {
-            this.intervalId = setInterval(() => {
-                if (this.progress < 90) {
-                    this.progress += 10;
-                }
-            }, 300);
-        },
-
-        resetProgress() {
-            this.isUploading = false;
-            this.progress = 0;
-            clearInterval(this.intervalId);
-        },
-
-        showAlert(message, type) {
-            this.alertMessage = message;
-            this.alertClass = type;
-        },
+    async fetchMostActivePlayers() {
+      try {
+        const response = await fetch("http://localhost:9091/api/leaderboard/most-active");
+        if (!response.ok) throw new Error("Failed to fetch most active players");
+        this.mostActivePlayers = await response.json();
+      } catch (error) {
+        console.error(error);
+      }
     },
+    addScopedStyles() {
+      if (!document.getElementById("leaderboard-styles")) {
+        const style = document.createElement("style");
+        style.id = "leaderboard-styles";
+        style.innerHTML = `
+          .leaderboard-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            border-radius: 8px;
+            background: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          }
 
+          .leaderboard-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+          }
 
-    style: `
-        <style scoped>
-            .container {
-                max-width: 500px;
-                border: 1px solid #ddd;
-            }
-            .progress {
-                height: 25px;
-            }
-            .progress-bar {
-                font-weight: bold;
-            }
-            .btn-lg {
-                padding: 12px 24px;
-                font-size: 18px;
-            }
-        </style>
-    `
+          .toggle-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+          }
+
+          .leaderboard-btn {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #ddd;
+            transition: background 0.3s;
+          }
+
+          .leaderboard-btn.active {
+            background: #3498db;
+            color: white;
+          }
+
+          .leaderboard-btn:hover {
+            background: #2980b9;
+            color: white;
+          }
+
+          .game-selection {
+            margin-bottom: 20px;
+          }
+
+          .game-selection select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+          }
+
+          .leaderboard-heading {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+            color: #34495e;
+          }
+
+          .leaderboard-list {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            max-width: 400px;
+          }
+
+          .leaderboard-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #ecf0f1;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+          }
+
+          .leaderboard-list li:hover {
+            background: #d5dbdb;
+          }
+
+          .rank {
+            font-weight: bold;
+            font-size: 18px;
+            width: 30px;
+            display: inline-block;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    }
+  }
 };

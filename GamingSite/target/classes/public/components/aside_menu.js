@@ -1,6 +1,9 @@
 export default {
 	template: `
+	
     <div v-if="authState.isLoggedIn" class="d-flex flex-column border-end bg-light" style="min-height: 100vh;">
+	
+	<br><br>
       
       <div class="d-flex justify-content-start p-2">
         <button class="btn btn-outline-black" @click="toggleSidebar">
@@ -8,7 +11,10 @@ export default {
         </button>
       </div>
 
-      <aside :class="['d-flex flex-column p-3', sidebarOpen ? 'w-100' : 'w-auto']" style="min-height: 100vh; width: 100px; transition: width 0.3s;">
+	  <aside :class="['d-flex flex-column p-3', sidebarOpen ? 'w-100' : 'w-auto']" 
+	         style="max-height: 100vh; overflow-y: auto; min-height: 100vh; width: 100px; transition: width 0.3s;">
+			 
+			 
 
         <!-- Admin Functions Section -->
         <div v-if="authState.currentRole === 'ADMIN'">
@@ -150,6 +156,12 @@ export default {
 		              <i class="bi bi-graph-up"></i>
 		              <span class="ms-2" v-if="sidebarOpen">Post Complaint</span>
             </button>
+			
+			<br><br>
+			<br><br>
+			<br>
+
+
         </div>
 
       </aside>

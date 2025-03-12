@@ -1,7 +1,7 @@
 export default {
     template: `
      <div class="container mt-5 text-center">
-        <h2 class="fw-bold text-primary mb-3">Geometry Dash Clone</h2>
+        <h2 class="fw-bold text-primary mb-3">Geometry Dash (Kinda)</h2>
         <canvas ref="gameCanvas" width="600" height="300" class="border"></canvas>
       </div>
     `,
