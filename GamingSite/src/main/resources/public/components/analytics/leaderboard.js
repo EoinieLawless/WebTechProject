@@ -55,13 +55,9 @@ export default {
 		        "Aim Trainer",
 		        "Memory Match",
 		        "Higher or Lower",
-		        "Slot Machine",
-		        "Geometry Dash",
-		        "Piano Tiles",
 		        "Number Sequence Challenge",
 		        "Sudoku Time Attack",
 		        "Type Racer",
-		        "Word Scramble",
 		        "Lucky Number Guess",
 		        "Math Speed"
 		      ],

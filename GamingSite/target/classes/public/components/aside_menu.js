@@ -56,18 +56,6 @@ export default {
 		    <i class="bi bi-bullseye"></i>
 		    <span class="ms-2" v-if="sidebarOpen">Aim Trainer</span>
 		  </button>
-
-		  <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'geometryDash' ? 'btn-active' : 'btn-success']"
-		          @click="changeView('geometryDash')">
-		    <i class="bi bi-speedometer2"></i>
-		    <span class="ms-2" v-if="sidebarOpen">Geometry Dash</span>
-		  </button>
-
-		  <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'pianoTiles' ? 'btn-active' : 'btn-success']"
-		          @click="changeView('pianoTiles')">
-		    <i class="bi bi-music-note-list"></i>
-		    <span class="ms-2" v-if="sidebarOpen">Piano Tiles</span>
-		  </button>
 		  
 		  <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'typeRacer' ? 'btn-active' : 'btn-success']"
 		  	          @click="changeView('typeRacer')">
@@ -87,23 +75,12 @@ export default {
               <span class="ms-2" v-if="sidebarOpen">Memory Match</span>
             </button>
 
-            <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'numSequence' ? 'btn-active' : 'btn-warning']"
-                    @click="changeView('numSequence')">
-              <i class="bi bi-123"></i>
-              <span class="ms-2" v-if="sidebarOpen">Number Sequence</span>
-            </button>
-
             <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'sudoku' ? 'btn-active' : 'btn-warning']"
                     @click="changeView('sudoku')">
               <i class="bi bi-grid"></i>
               <span class="ms-2" v-if="sidebarOpen">Sudoku Attack</span>
             </button>
 		  
-		  <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'wordScramble' ? 'btn-active' : 'btn-warning']"
-	  	          @click="changeView('wordScramble')">
-	  	    <i class="bi bi-file-text"></i>
-	  	    <span class="ms-2" v-if="sidebarOpen">Word Scramble</span>
-	  	  </button>
 		  
 		  <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'mathSpeed' ? 'btn-active' : 'btn-warning']"
     	          @click="changeView('mathSpeed')">
@@ -122,11 +99,6 @@ export default {
             <span class="ms-2" v-if="sidebarOpen">Higher Or Lower</span>
           </button>
 
-          <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'slotMachine' ? 'btn-active' : 'btn-info']"
-                  @click="changeView('slotMachine')">
-            <i class="bi bi-dice-3"></i>
-            <span class="ms-2" v-if="sidebarOpen">Slot Machine</span>
-          </button>
 
           <button :class="['btn', 'w-100', 'mb-2', 'd-flex', 'align-items-center', selectedView === 'guessNumber' ? 'btn-active' : 'btn-info']"
                   @click="changeView('guessNumber')">
