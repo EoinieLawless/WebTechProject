@@ -56,6 +56,7 @@ body {
   color: #0058a3 !important;
 }
 
+
 /* Custom dropdown menu styling */
 .custom-dropdown-menu {
   position: absolute;
@@ -95,9 +96,31 @@ body {
     border: 1px solid darkorange;
 }
 
+/* Sliding transitions  */
 
 
+.card-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
 
-/* COME BACK LATER TO FIX THE FONT ISSUE */
+.move-down {
+    transform: translate(-50%, 100vh);
+    opacity: 0;
+}
+
+.roll-down {
+    transform: translate(-50%, -100vh);
+    opacity: 0;
+}
+
+.centered {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+}
+
 
 

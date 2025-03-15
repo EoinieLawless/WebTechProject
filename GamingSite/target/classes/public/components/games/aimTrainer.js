@@ -1,5 +1,7 @@
 export default {
   template: `
+  
+  <br><br>
     <div class="game-container text-center">
       <h2 class="text-primary">Aim Trainer</h2>
       <p>Click the red targets as quickly as possible!</p>

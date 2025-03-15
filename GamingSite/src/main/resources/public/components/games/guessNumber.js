@@ -105,11 +105,7 @@ export default {
           width: 100px;
           text-align: center;
         }
-        .btn {
-          padding: 10px 20px;
-          font-size: 18px;
-          cursor: pointer;
-        }
+        
         .message {
           font-size: 20px;
           margin-top: 10px;

@@ -1,5 +1,6 @@
 export default {
-  template: `
+	template: `
+	<br><br>
     <div class="leaderboard-container">
       <h2 class="leaderboard-title">Leaderboard</h2>
 
@@ -19,12 +20,12 @@ export default {
 
         <h3 class="leaderboard-heading">Top Players for {{ selectedGame }}</h3>
         <ul class="leaderboard-list">
-          <li v-for="(player, index) in topPlayers" :key="player.id">
+          <li v-for="(player, index) in formattedLeaderboard" :key="player.id">
             <span class="rank">
-              <span v-if="index === 0">🥇</span>
-              <span v-else-if="index === 1">🥈</span>
-              <span v-else-if="index === 2">🥉</span>
-              <span v-else>#{{ index + 1 }}</span>
+              <span v-if="player.rank === 1">🥇</span>
+              <span v-else-if="player.rank === 2">🥈</span>
+              <span v-else-if="player.rank === 3">🥉</span>
+              <span v-else>#{{ player.rank }}</span>
             </span>
             {{ player.username }} - Score: {{ player.score }}
           </li>
@@ -48,54 +49,75 @@ export default {
       </div>
     </div>
   `,
-  data() {
-    return {
-		games: [
-		        "Flappy Bird",
-		        "Aim Trainer",
-		        "Memory Match",
-		        "Higher or Lower",
-		        "Number Sequence Challenge",
-		        "Sudoku Time Attack",
-		        "Type Racer",
-		        "Lucky Number Guess",
-		        "Math Speed"
-		      ],
-      selectedGame: "Piano Tiles",
-      topPlayers: [],
-      mostActivePlayers: [],
-      showTopPlayers: true 
-    };
-  },
-  mounted() {
-    this.addScopedStyles();
-    this.fetchTopPlayers();
-    this.fetchMostActivePlayers();
-  },
-  methods: {
-    async fetchTopPlayers() {
-      try {
-        const response = await fetch(`http://localhost:9091/api/leaderboard/${this.selectedGame}`);
-        if (!response.ok) throw new Error("Failed to fetch leaderboard");
-        this.topPlayers = await response.json();
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async fetchMostActivePlayers() {
-      try {
-        const response = await fetch("http://localhost:9091/api/leaderboard/most-active");
-        if (!response.ok) throw new Error("Failed to fetch most active players");
-        this.mostActivePlayers = await response.json();
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    addScopedStyles() {
-      if (!document.getElementById("leaderboard-styles")) {
-        const style = document.createElement("style");
-        style.id = "leaderboard-styles";
-        style.innerHTML = `
+	data() {
+		return {
+			games: [
+				"Flappy Bird",
+				"Aim Trainer",
+				"Memory Match",
+				"Higher or Lower",
+				"Number Sequence Challenge",
+				"Sudoku Time Attack",
+				"Type Racer",
+				"Lucky Number Guess",
+				"Math Speed"
+			],
+			selectedGame: "Flappy Bird",
+			topPlayers: [],
+			mostActivePlayers: [],
+			showTopPlayers: true,
+			lowestScoreWins: ["Guess Number", "Number Sequence Challenge", "Memory Match", "Sudoku Time Attack", "Type Racer"]
+		};
+	},
+	computed: {
+		formattedLeaderboard() {
+			let rank = 1;
+			return this.topPlayers.map((player, index, arr) => {
+				if (index > 0 && player.score !== arr[index - 1].score) {
+					rank = index + 1;
+				}
+				return { ...player, rank };
+			});
+		}
+	},
+	mounted() {
+		this.fetchTopPlayers();
+		this.fetchMostActivePlayers();
+		this.addScopedStyles(); // Ensure styles are applied
+	},
+	methods: {
+		async fetchTopPlayers() {
+		  try {
+		    const response = await fetch(`http://localhost:9091/api/leaderboard/${encodeURIComponent(this.selectedGame)}`);
+		    if (!response.ok) throw new Error("Failed to fetch leaderboard");
+		    let players = await response.json();
+
+		    // Sort based on game type (lowest or highest wins)
+		    if (this.lowestScoreWins.includes(this.selectedGame)) {
+		      players.sort((a, b) => a.score - b.score); // Ascending order (lower score is better)
+		    } else {
+		      players.sort((a, b) => b.score - a.score); // Descending order (higher score is better)
+		    }
+
+		    this.topPlayers = players;
+		  } catch (error) {
+		    console.error("Fetch Error:", error);
+		  }
+		},
+		async fetchMostActivePlayers() {
+			try {
+				const response = await fetch("http://localhost:9091/api/leaderboard/most-active");
+				if (!response.ok) throw new Error("Failed to fetch most active players");
+				this.mostActivePlayers = await response.json();
+			} catch (error) {
+				console.error(error);
+			}
+		},
+		addScopedStyles() {
+			if (!document.getElementById("leaderboard-styles")) {
+				const style = document.createElement("style");
+				style.id = "leaderboard-styles";
+				style.innerHTML = `
           .leaderboard-container {
             display: flex;
             flex-direction: column;
@@ -190,8 +212,8 @@ export default {
             display: inline-block;
           }
         `;
-        document.head.appendChild(style);
-      }
-    }
-  }
+				document.head.appendChild(style);
+			}
+		}
+	}
 };

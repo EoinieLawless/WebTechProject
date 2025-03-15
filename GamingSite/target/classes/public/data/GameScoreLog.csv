@@ -1,66 +1,52 @@
-"ID","GAME","GAME_TYPE","SCORE","USERNAME"
-"1","Flappy Bird","Precision","6","admin"
-"2","Aim Trainer","Precision","24","admin"
-"3","Memory Match","Puzzle","25","admin"
-"4","Higher or Lower","Luck","1","admin"
-"5","Slot Machine","Luck","0","admin"
-"6","Slot Machine","Luck","20","admin"
-"7","Slot Machine","Luck","120","admin"
-"8","Slot Machine","Luck","140","admin"
-"9","Slot Machine","Luck","135","admin"
-"10","Slot Machine","Luck","130","admin"
-"11","Slot Machine","Luck","125","admin"
-"12","Slot Machine","Luck","120","admin"
-"13","Slot Machine","Luck","115","admin"
-"14","Slot Machine","Luck","110","admin"
-"15","Flappy Bird","Precision","0","Stephen"
-"16","Flappy Bird","Precision","8","Stephen"
-"17","Aim Trainer","Precision","22","Stephen"
-"18","Geometry Dash","Precision","3","Stephen"
-"19","Piano Tiles","Precision","14","Stephen"
-"20","Piano Tiles","Precision","12","Stephen"
-"21","Piano Tiles","Precision","20","Stephen"
-"22","Memory Match","Puzzle","27","Stephen"
-"23","Number Sequence Challenge","Puzzle","3","Stephen"
-"24","Flappy Bird","Precision","0","Ella"
-"25","Flappy Bird","Precision","4","Ella"
-"26","Flappy Bird","Precision","1","Ella"
-"27","Flappy Bird","Precision","7","Ella"
-"28","Memory Match","Puzzle","19","Ella"
-"29","Memory Match","Puzzle","39","Ella"
-"30","Sudoku Time Attack","Puzzle","20","Ella"
-"31","Higher or Lower","Luck","0","Ella"
-"32","Higher or Lower","Luck","2","Ella"
-"33","Slot Machine","Luck","20","Ella"
-"34","Slot Machine","Luck","15","Ella"
-"35","Piano Tiles","Precision","17","Ella"
-"36","Geometry Dash","Precision","2","Ella"
-"37","Geometry Dash","Precision","0","Ella"
-"38","Aim Trainer","Precision","19","Ella"
-"39","Memory Match","Puzzle","29","Ella"
-"40","Aim Trainer","Precision","24","Dylan"
-"41","Higher or Lower","Luck","2","Dylan"
-"42","Higher or Lower","Luck","2","Dylan"
-"43","Memory Match","Puzzle","25","Dylan"
-"44","Piano Tiles","Precision","14","Dylan"
-"45","Flappy Bird","Precision","4","Rane"
-"46","Flappy Bird","Precision","3","Rane"
-"47","Aim Trainer","Precision","18","Rane"
-"48","Geometry Dash","Precision","14","Rane"
-"49","Piano Tiles","Precision","5","Rane"
-"50","Piano Tiles","Precision","7","Rane"
-"51","Piano Tiles","Precision","6","Rane"
-"52","Type Racer","Precision","8","Rane"
-"53","Type Racer","Precision","7","Rane"
-"54","Memory Match","Puzzle","30","Rane"
-"55","Number Sequence Challenge","Puzzle","7","Rane"
-"56","Sudoku Time Attack","Puzzle","9","Rane"
-"57","Word Scramble","Puzzle","3","Rane"
-"58","Higher or Lower","Luck","2","Rane"
-"59","Slot Machine","Luck","0","Rane"
-"60","Slot Machine","Luck","20","Rane"
-"61","Slot Machine","Luck","15","Rane"
-"62","Lucky Number Guess","Luck","3","Rane"
-"63","Math Speed","Puzzle","20","Rane"
-"64","Type Racer","Precision","9","Rane"
-"65","Type Racer","Precision","6","Rane"
+ID,GAME,GAME_TYPE,SCORE,USERNAME
+1,Flappy Bird,Precision,6,admin
+2,Aim Trainer,Precision,24,admin
+3,Memory Match,Puzzle,25,admin
+4,Higher or Lower,Luck,1,admin
+5,Slot Machine,Luck,0,admin
+6,Flappy Bird,Precision,0,Stephen
+7,Flappy Bird,Precision,8,Stephen
+8,Aim Trainer,Precision,22,Stephen
+9,Geometry Dash,Precision,3,Stephen
+10,Piano Tiles,Precision,14,Stephen
+11,Piano Tiles,Precision,12,Stephen
+12,Piano Tiles,Precision,20,Stephen
+13,Memory Match,Puzzle,27,Stephen
+14,Number Sequence Challenge,Puzzle,3,Stephen
+15,Flappy Bird,Precision,0,Ella
+16,Flappy Bird,Precision,4,Ella
+17,Flappy Bird,Precision,1,Ella
+18,Flappy Bird,Precision,7,Ella
+19,Memory Match,Puzzle,19,Ella
+20,Memory Match,Puzzle,39,Ella
+21,Sudoku Time Attack,Puzzle,20,Ella
+22,Higher or Lower,Luck,0,Ella
+23,Higher or Lower,Luck,2,Ella
+24,Piano Tiles,Precision,17,Ella
+25,Geometry Dash,Precision,2,Ella
+26,Geometry Dash,Precision,0,Ella
+27,Aim Trainer,Precision,19,Ella
+28,Memory Match,Puzzle,29,Ella
+29,Aim Trainer,Precision,24,Dylan
+30,Higher or Lower,Luck,2,Dylan
+31,Higher or Lower,Luck,2,Dylan
+32,Memory Match,Puzzle,25,Dylan
+33,Piano Tiles,Precision,14,Dylan
+34,Flappy Bird,Precision,4,Rane
+35,Flappy Bird,Precision,3,Rane
+36,Aim Trainer,Precision,18,Rane
+37,Geometry Dash,Precision,14,Rane
+38,Piano Tiles,Precision,5,Rane
+39,Piano Tiles,Precision,7,Rane
+40,Piano Tiles,Precision,6,Rane
+41,Type Racer,Precision,8,Rane
+42,Type Racer,Precision,7,Rane
+43,Memory Match,Puzzle,30,Rane
+44,Number Sequence Challenge,Puzzle,7,Rane
+45,Sudoku Time Attack,Puzzle,9,Rane
+46,Word Scramble,Puzzle,3,Rane
+47,Higher or Lower,Luck,2,Rane
+48,Lucky Number Guess,Luck,3,Rane
+49,Math Speed,Puzzle,20,Rane
+50,Type Racer,Precision,9,Rane
+51,Type Racer,Precision,6,Rane
