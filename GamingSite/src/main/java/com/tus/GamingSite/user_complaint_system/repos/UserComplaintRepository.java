@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface UserComplaintRepository extends JpaRepository<UserComplaint, Long> {
     List<UserComplaint> findAll();
+    boolean existsByUsernameAndMessage(String username, String message);
 }

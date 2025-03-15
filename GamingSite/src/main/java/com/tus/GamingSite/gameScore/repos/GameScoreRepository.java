@@ -8,4 +8,6 @@ public interface GameScoreRepository extends JpaRepository<GameScore, Long> {
     List<GameScore> findByGame(String game);
     List<GameScore> findByUsername(String username);
     List<GameScore> findByGameType(String gameType);
+    
+    boolean existsByUsernameAndGame(String username, String game);
 }

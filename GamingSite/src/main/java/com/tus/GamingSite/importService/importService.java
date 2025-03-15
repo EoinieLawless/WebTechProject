@@ -22,10 +22,10 @@ public class importService {
 
     @Autowired
     private GameScoreRepository gameScoreRepository;
-    
+
     @Autowired
     private UserComplaintRepository userComplaintRepository;
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -48,9 +48,18 @@ public class importService {
 
             List<GameScore> scores = new ArrayList<>();
             for (CSVRecord record : csvParser) {
+                String username = record.get("USERNAME");
+                String game = record.get("GAME");
+
+                // Check if score already exists
+                if (gameScoreRepository.existsByUsernameAndGame(username, game)) {
+                    System.out.println("⚠️ Skipping existing score for user: " + username);
+                    continue;
+                }
+
                 GameScore score = new GameScore(
-                        record.get("USERNAME"),
-                        record.get("GAME"),
+                        username,
+                        game,
                         Integer.parseInt(record.get("SCORE")),
                         record.get("GAME_TYPE")
                 );
@@ -74,10 +83,18 @@ public class importService {
 
             List<UserComplaint> complaints = new ArrayList<>();
             for (CSVRecord record : csvParser) {
+                String username = record.get("USERNAME");
+                String message = record.get("MESSAGE");
+
+                if (userComplaintRepository.existsByUsernameAndMessage(username, message)) {
+                    System.out.println("Skipping existing complaint for user: " + username);
+                    continue;
+                }
+
                 UserComplaint complaint = new UserComplaint(
-                        record.get("USERNAME"),
+                        username,
                         record.get("EMAIL"),
-                        record.get("MESSAGE")
+                        message
                 );
                 complaints.add(complaint);
             }
@@ -99,10 +116,18 @@ public class importService {
 
             List<User> users = new ArrayList<>();
             for (CSVRecord record : csvParser) {
+                String username = record.get("USERNAME");
+
+                // Check if user already exists
+                if (userRepository.existsByUsername(username)) {
+                    System.out.println("⚠️ Skipping existing user: " + username);
+                    continue;
+                }
+
                 User user = new User();
-                user.setUsername(record.get("USERNAME"));
+                user.setUsername(username);
                 user.setEmail(record.get("EMAIL"));
-                user.setPassword(record.get("PASSWORD")); // Assume passwords are hashed
+                user.setPassword(record.get("PASSWORD"));
                 user.setRoles(Set.of(Role.valueOf(record.get("ROLE").toUpperCase())));
                 users.add(user);
             }
@@ -113,3 +138,4 @@ public class importService {
         }
     }
 }
+
