@@ -1,12 +1,16 @@
 package com.tus.GamingSite.users_manager.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.access.prepost.PreAuthorize;
+
 import com.tus.GamingSite.users_manager.model.User;
 import com.tus.GamingSite.users_manager.service.UserService;
 
@@ -20,28 +24,48 @@ public class AdminController {
     // Register a new user (secured for ADMIN)
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/register")
-    public User registerUser(@RequestBody User user) {
+    public ResponseEntity<EntityModel<User>> registerUser(@RequestBody User user) {
         if (user.getRoles() == null || user.getRoles().isEmpty()) {
-            throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST, "User roles must be provided in the JSON body."
-            );
+            return ResponseEntity.badRequest().build();
         }
-        return userService.registerUser(user);
-        
+
+        User savedUser = userService.registerUser(user);
+
+        EntityModel<User> entityModel = EntityModel.of(savedUser);
+        entityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AdminController.class)
+                .getAllUsers()).withRel("all-users"));
+        entityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AdminController.class)
+                .deleteUser(savedUser.getId())).withRel("delete-user"));
+
+        return ResponseEntity.ok(entityModel);
     }
 
     // Get all users (secured for ADMIN)
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<CollectionModel<EntityModel<User>>> getAllUsers() {
+        List<EntityModel<User>> users = userService.getAllUsers().stream()
+                .map(user -> {
+                    EntityModel<User> entityModel = EntityModel.of(user);
+                    entityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AdminController.class)
+                            .deleteUser(user.getId())).withRel("delete-user"));
+                    return entityModel;
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(CollectionModel.of(users));
     }
 
     // Delete a user by ID (secured for ADMIN)
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<String>> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        
+        EntityModel<String> entityModel = EntityModel.of("User deleted successfully");
+        entityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AdminController.class)
+                .getAllUsers()).withRel("all-users"));
+
+        return ResponseEntity.ok(entityModel);
     }
 }

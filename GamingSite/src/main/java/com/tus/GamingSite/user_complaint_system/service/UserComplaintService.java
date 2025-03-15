@@ -1,7 +1,10 @@
 package com.tus.GamingSite.user_complaint_system.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.tus.GamingSite.user_complaint_system.dto.UserComplaintDTO;
 import com.tus.GamingSite.user_complaint_system.model.UserComplaint;
 import com.tus.GamingSite.user_complaint_system.repos.UserComplaintRepository;
@@ -29,8 +32,17 @@ public class UserComplaintService {
     }
 
     public void deleteComplaint(Long id) {
-        complaintRepository.deleteById(id);
+        UserComplaint complaint = complaintRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Complaint not found"));
+
+        try {
+            complaintRepository.delete(complaint);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting complaint: " + e.getMessage());
+        }
     }
+
+
 
     private UserComplaintDTO convertToDTO(UserComplaint complaint) {
         return new UserComplaintDTO(complaint.getId(), complaint.getUsername(), complaint.getEmail(), complaint.getMessage());

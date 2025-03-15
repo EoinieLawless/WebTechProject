@@ -1,7 +1,7 @@
 export default {
   template: `
     <div class="container mt-5">
-      <h2 class="fw-bold text-primary mb-4 text-center">📩 User Complaints</h2>
+      <h2 class="fw-bold text-primary mb-4 text-center">User Complaints</h2>
 
       <!-- Loading Indicator -->
       <div v-if="isLoading" class="loading-container text-center">
@@ -13,7 +13,7 @@ export default {
 
       <!-- No Complaints Message -->
       <div v-if="!isLoading && complaints.length === 0" class="text-center mt-4">
-        <p class="text-muted">✅ No complaints available.</p>
+        <p class="text-muted">No complaints available.</p>
       </div>
 
       <!-- Complaints List -->
@@ -132,47 +132,65 @@ export default {
     this.fetchComplaints();
   },
   methods: {
-    async fetchComplaints() {
-      try {
-        const response = await fetch("http://localhost:9091/api/complaints/all");
-        if (!response.ok) throw new Error("Failed to fetch complaints");
+	async fetchComplaints() {
+	  try {
+	    const response = await fetch("http://localhost:9091/api/complaints/all");
+	    if (!response.ok) throw new Error("Failed to fetch complaints");
 
-        this.complaints = await response.json();
-        this.visibleComplaints = this.complaints.slice(0, this.complaintsPerPage); // Load first 5 complaints
-      } catch (error) {
-        console.error("Error fetching complaints:", error);
-      } finally {
-        this.isLoading = false;
-      }
-    },
+	    let data = await response.json();
 
-    loadMoreComplaints() {
-      const currentLength = this.visibleComplaints.length;
-      const nextBatch = this.complaints.slice(currentLength, currentLength + this.complaintsPerPage);
-      this.visibleComplaints = [...this.visibleComplaints, ...nextBatch];
-    },
+	    this.complaints = data._embedded?.userComplaintDTOList || [];
+
+	    this.visibleComplaints = this.complaints.slice(0, this.complaintsPerPage);
+	  } catch (error) {
+	    console.error("Error fetching complaints:", error);
+	    this.complaints = []; 
+	  } finally {
+	    this.isLoading = false;
+	  }
+	},
+
+	loadMoreComplaints() {
+	  if (!Array.isArray(this.complaints)) return; // Ensure it's an array
+
+	  const currentLength = this.visibleComplaints.length;
+	  const nextBatch = this.complaints.slice(currentLength, currentLength + this.complaintsPerPage);
+	  this.visibleComplaints = [...this.visibleComplaints, ...nextBatch];
+	},
 
     showDeleteConfirmation(id) {
       this.complaintToDelete = id;
       this.showModal = true;
     },
 
-    async confirmDelete() {
-      if (!this.complaintToDelete) return;
+	async confirmDelete() {
+	  if (!this.complaintToDelete) return;
 
-      try {
-        const response = await fetch(`http://localhost:9091/api/complaints/delete/${this.complaintToDelete}`, {
-          method: "DELETE"
-        });
+	  try {
+	    const response = await fetch(`http://localhost:9091/api/complaints/delete/${this.complaintToDelete}`, {
+	      method: "DELETE",
+	      headers: {
+	        "Authorization": `Bearer ${localStorage.getItem('jwt')}`,
+	        "Content-Type": "application/json"
+	      }
+	    });
 
-        if (!response.ok) throw new Error("Failed to delete complaint");
+	    const responseData = await response.json();
 
-        this.complaints = this.complaints.filter(complaint => complaint.id !== this.complaintToDelete);
-        this.visibleComplaints = this.visibleComplaints.filter(complaint => complaint.id !== this.complaintToDelete);
-        this.showModal = false;
-      } catch (error) {
-        console.error("Error deleting complaint:", error);
-      }
-    }
+	    if (!response.ok) {
+	      throw new Error(responseData.error || "Failed to delete complaint");
+	    }
+
+	    // Remove from UI
+	    this.complaints = this.complaints.filter(complaint => complaint.id !== this.complaintToDelete);
+	    this.visibleComplaints = this.visibleComplaints.filter(complaint => complaint.id !== this.complaintToDelete);
+
+	    this.showModal = false;
+	  } catch (error) {
+	    console.error("Error deleting complaint:", error);
+	    alert(error.message); 
+	  }
+	}
+
   }
 };

@@ -117,38 +117,40 @@ export default {
       this.initDataTable();
     });
 
-    // Event delegation for dynamically generated delete buttons
-    $(document).on('click', '.delete-user', (event) => {
-      const userId = $(event.currentTarget).data('id');
-      const userRoles = $(event.currentTarget).data('roles').split(',');
+	$(document).on('click', '.delete-user', (event) => {
+	  const userId = $(event.currentTarget).data('id');
+	  const userRoles = $(event.currentTarget).data('roles').split(',');
 
-      if (userRoles.includes("ADMIN")) {
-        this.showAlert("Admin users cannot be deleted!", "alert-danger");
-        return;
-      }
+	  // Prevent deletion of Admin users
+	  if (userRoles.includes("ADMIN")) {
+	    this.showAlert("Admin users cannot be deleted!", "alert-danger");
+	    return;
+	  }
 
-      this.userIdToDelete = userId;
-      $('#confirmDeleteModal').modal('show');
-    });
+	  this.userIdToDelete = userId;
+	  $('#confirmDeleteModal').modal('show');
+	});
   },
 
   methods: {
     initDataTable() {
-      this.dataTable = $('#usersTable').DataTable({
-        ajax: {
-          url: '/api/admin/users',
-          dataSrc: '',
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
-        },
-        columns: [
-          { data: 'id' },
-          { data: 'username' },
-          { data: 'roles', render: data => data ? data.join(', ') : '' },
-          { data: null, orderable: false, render: (data, type, row) =>
-              `<button class="btn btn-danger btn-sm delete-user" data-id="${row.id}" data-roles="${row.roles.join(',')}">Delete</button>`
-          }
-        ]
-      });
+		this.dataTable = $('#usersTable').DataTable({
+		  ajax: {
+		    url: '/api/admin/users',
+		    dataSrc: function(json) {
+		      return json._embedded?.userList || []; // Extract the actual users array
+		    },
+		    headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
+		  },
+		  columns: [
+		    { data: 'id' },
+		    { data: 'username' },
+		    { data: 'roles', render: data => data ? data.join(', ') : '' },
+		    { data: null, orderable: false, render: (data, type, row) =>
+		        `<button class="btn btn-danger btn-sm delete-user" data-id="${row.id}" data-roles="${row.roles.join(',')}">Delete</button>`
+		    }
+		  ]
+		});
     },
 
     toggleDropdown() { this.isDropdownOpen = !this.isDropdownOpen; },
@@ -196,23 +198,35 @@ export default {
       }
     },
 
-    async confirmDelete() {
-      try {
-        const response = await fetch(`/api/admin/users/${this.userIdToDelete}`, {
-          method: "DELETE",
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
-        });
+	async confirmDelete() {
+	  if (!this.userIdToDelete) return;
 
-        if (response.ok) {
-          this.showAlert("User deleted successfully.", "alert-success");
-          this.dataTable.ajax.reload();
-        }
-      } catch (error) {
-        this.showAlert("Error: " + error.message, "alert-danger");
-      } finally {
-        $('#confirmDeleteModal').modal('hide');
-      }
-    },
+	  try {
+	    const response = await fetch(`/api/admin/users/${this.userIdToDelete}`, {
+	      method: "DELETE",
+	      headers: {
+	        "Authorization": `Bearer ${localStorage.getItem('jwt')}`,
+	        "Content-Type": "application/json"
+	      }
+	    });
+
+	    const responseData = await response.json();
+
+	    if (!response.ok) {
+	      throw new Error(responseData.error || "Failed to delete user");
+	    }
+
+	    // Instantly remove user from DataTable without full reload
+	    this.dataTable.row($(`button[data-id="${this.userIdToDelete}"]`).closest('tr')).remove().draw(false);
+
+	    this.showAlert("User deleted successfully!", "alert-success");
+
+	  } catch (error) {
+	    this.showAlert("Error deleting user: " + error.message, "alert-danger");
+	  } finally {
+	    $('#confirmDeleteModal').modal('hide');
+	  }
+	},
 
     showAlert(message, type) {
       this.alertMessage = message;

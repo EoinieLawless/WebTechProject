@@ -2,10 +2,11 @@ package com.tus.GamingSite.gameScore.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 @Getter
 @Setter
-public class GameScoreDTO {
+public class GameScoreDTO extends RepresentationModel<GameScoreDTO> {
     private String username;
     private String game;
     private int score;
