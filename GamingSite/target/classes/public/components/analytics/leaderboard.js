@@ -90,28 +90,38 @@ export default {
 		  try {
 		    const response = await fetch(`http://localhost:9091/api/leaderboard/${encodeURIComponent(this.selectedGame)}`);
 		    if (!response.ok) throw new Error("Failed to fetch leaderboard");
-		    let players = await response.json();
+		    
+		    let data = await response.json();
+		    
+		    this.topPlayers = data._embedded?.gameScoreList || [];
 
-		    // Sort based on game type (lowest or highest wins)
 		    if (this.lowestScoreWins.includes(this.selectedGame)) {
-		      players.sort((a, b) => a.score - b.score); // Ascending order (lower score is better)
+		      this.topPlayers.sort((a, b) => a.score - b.score); 
 		    } else {
-		      players.sort((a, b) => b.score - a.score); // Descending order (higher score is better)
+		      this.topPlayers.sort((a, b) => b.score - a.score); 
 		    }
 
-		    this.topPlayers = players;
 		  } catch (error) {
 		    console.error("Fetch Error:", error);
 		  }
 		},
 		async fetchMostActivePlayers() {
-			try {
-				const response = await fetch("http://localhost:9091/api/leaderboard/most-active");
-				if (!response.ok) throw new Error("Failed to fetch most active players");
-				this.mostActivePlayers = await response.json();
-			} catch (error) {
-				console.error(error);
-			}
+		  try {
+		    const response = await fetch("http://localhost:9091/api/leaderboard/most-active");
+		    if (!response.ok) throw new Error("Failed to fetch most active players");
+
+		    let data = await response.json();
+
+		    if (data.error) {
+		      this.mostActivePlayers = [];
+		      console.warn("No active players found");
+		    } else {
+		      this.mostActivePlayers = data;
+		    }
+
+		  } catch (error) {
+		    console.error("Fetch Error:", error);
+		  }
 		},
 		addScopedStyles() {
 			if (!document.getElementById("leaderboard-styles")) {

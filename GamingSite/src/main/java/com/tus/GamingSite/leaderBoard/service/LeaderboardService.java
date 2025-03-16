@@ -13,16 +13,21 @@ public class LeaderboardService {
     @Autowired
     private LeaderboardRepository leaderboardRepository;
 
-    // Get best score per player in a specific game
     public List<GameScore> getTopPlayers(String game) {
-        return leaderboardRepository.findBestScorePerPlayerByGame(game);
+        List<String> gamesWithLowestScoreWins = List.of("Guess Number", "Memory Match", "Sudoku Time Attack", "Type Racer");
+
+        return leaderboardRepository.findBestScorePerPlayerByGame(game, gamesWithLowestScoreWins);
     }
 
-    // Get most active players by the number of games played
     public List<String> getMostActivePlayers() {
         return leaderboardRepository.findMostActivePlayers()
-                .stream()
-                .map(obj -> obj[0].toString() + " - Games Played: " + obj[1].toString())
-                .collect(Collectors.toList());
+            .stream()
+            .map(obj -> {
+                String username = obj[0].toString();
+                String gamesPlayed = String.valueOf(obj[1]); // Ensure proper string conversion
+                return username + " - Games Played: " + gamesPlayed;
+            })
+            .collect(Collectors.toList());
     }
+
 }

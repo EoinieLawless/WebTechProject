@@ -11394,3 +11394,9 @@ END
 
 !ENTRY org.eclipse.wildwebdeveloper.xml 2 0 2025-03-15 23:21:01.765
 !MESSAGE The given URI http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_1.xsd from org.eclipse.jst.standard.schemas could not be resolved for local access
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-15 23:40:51.064
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/FinalVersion/WebTechProject/GamingSite/src/main/resources/public/components/admin/register.js
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-03-15 23:45:15.767
+!MESSAGE [Info]	No ES Library found for file: file:///C:/Users/eoini/Desktop/Msc%20TUS/Semester2/WebTech/FinalVersion/WebTechProject/GamingSite/src/main/resources/public/components/analytics/leaderboard.js
