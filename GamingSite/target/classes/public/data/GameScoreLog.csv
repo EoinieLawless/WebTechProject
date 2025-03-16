@@ -50,3 +50,68 @@ ID,GAME,GAME_TYPE,SCORE,USERNAME
 49,Math Speed,Puzzle,20,Rane
 50,Type Racer,Precision,9,Rane
 51,Type Racer,Precision,6,Rane
+52,Flappy Bird,Precision,34,player1
+53,Aim Trainer,Precision,48,player1
+54,Memory Match,Puzzle,15,player1
+55,Higher or Lower,Luck,45,player1
+56,Slot Machine,Luck,8,player1
+57,Geometry Dash,Precision,41,player1
+58,Piano Tiles,Precision,20,player1
+59,Number Sequence Challenge,Puzzle,91,player1
+60,Sudoku Time Attack,Puzzle,84,player1
+61,Type Racer,Precision,86,player1
+62,Word Scramble,Puzzle,64,player1
+63,Lucky Number Guess,Luck,75,player1
+64,Math Speed,Puzzle,32,player1
+65,Flappy Bird,Precision,93,player2
+66,Aim Trainer,Precision,11,player2
+67,Memory Match,Puzzle,94,player2
+68,Higher or Lower,Luck,7,player2
+69,Slot Machine,Luck,14,player2
+70,Geometry Dash,Precision,65,player2
+71,Piano Tiles,Precision,76,player2
+72,Number Sequence Challenge,Puzzle,38,player2
+73,Sudoku Time Attack,Puzzle,10,player2
+74,Type Racer,Precision,5,player2
+75,Word Scramble,Puzzle,68,player2
+76,Lucky Number Guess,Luck,85,player2
+77,Math Speed,Puzzle,38,player2
+78,Flappy Bird,Precision,23,player3
+79,Aim Trainer,Precision,79,player3
+80,Memory Match,Puzzle,72,player3
+81,Higher or Lower,Luck,4,player3
+82,Slot Machine,Luck,100,player3
+83,Geometry Dash,Precision,3,player3
+84,Piano Tiles,Precision,98,player3
+85,Number Sequence Challenge,Puzzle,75,player3
+86,Sudoku Time Attack,Puzzle,45,player3
+87,Type Racer,Precision,59,player3
+88,Word Scramble,Puzzle,57,player3
+89,Lucky Number Guess,Luck,45,player3
+90,Math Speed,Puzzle,32,player3
+91,Flappy Bird,Precision,86,player4
+92,Aim Trainer,Precision,3,player4
+93,Memory Match,Puzzle,71,player4
+94,Higher or Lower,Luck,32,player4
+95,Slot Machine,Luck,44,player4
+96,Geometry Dash,Precision,51,player4
+97,Piano Tiles,Precision,82,player4
+98,Number Sequence Challenge,Puzzle,6,player4
+99,Sudoku Time Attack,Puzzle,15,player4
+100,Type Racer,Precision,71,player4
+101,Word Scramble,Puzzle,49,player4
+102,Lucky Number Guess,Luck,66,player4
+103,Math Speed,Puzzle,11,player4
+104,Flappy Bird,Precision,76,player5
+105,Aim Trainer,Precision,10,player5
+106,Memory Match,Puzzle,95,player5
+107,Higher or Lower,Luck,41,player5
+108,Slot Machine,Luck,56,player5
+109,Geometry Dash,Precision,95,player5
+110,Piano Tiles,Precision,53,player5
+111,Number Sequence Challenge,Puzzle,30,player5
+112,Sudoku Time Attack,Puzzle,95,player5
+113,Type Racer,Precision,34,player5
+114,Word Scramble,Puzzle,39,player5
+115,Lucky Number Guess,Luck,99,player5
+116,Math Speed,Puzzle,27,player5

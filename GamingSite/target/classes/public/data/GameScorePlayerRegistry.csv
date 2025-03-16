@@ -6,3 +6,7 @@ ID,EMAIL,PASSWORD,USERNAME,ROLE
 6,Eoin@gmail.com,$2a$10$Z42cY05RT0S4wvCDCNobd./IP1zuiaqPZo2B27iv7T4EQwOR/llWa,Eoin,USER
 7,Dylan@gmail.com,$2a$10$TYhf36LXfa1VZYP51PtI8uwBie9wMdCwKCVi.CeYMO2We9ZKdk2S.,Dylan,USER
 8,Rane@gmail.com,$2a$10$/GQ7E5VwPqbUGFQfHk2Dvunf9ihiw4t6fjH59If0s9KIsEpsMRTJG,Rane,USER
+9,Player1@gmail.com,$2a$10$/GQ7E5VwPqbUGFQfHk2Dvunf9ihiw4t6fjH59If0s9KIsEpsMRTJG,Player1,USER
+10,Player2@gmail.com,$2a$10$/GQ7E5VwPqbUGFQfHk2Dvunf9ihiw4t6fjH59If0s9KIsEpsMRTJG,Player2,USER
+11,Player1@gmail.com,$2a$10$/GQ7E5VwPqbUGFQfHk2Dvunf9ihiw4t6fjH59If0s9KIsEpsMRTJG,Player3,USER
+12,Player2@gmail.com,$2a$10$/GQ7E5VwPqbUGFQfHk2Dvunf9ihiw4t6fjH59If0s9KIsEpsMRTJG,Player4,USER

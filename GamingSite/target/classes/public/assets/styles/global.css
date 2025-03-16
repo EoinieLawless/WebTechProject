@@ -122,5 +122,19 @@ body {
     opacity: 1;
 }
 
+.radar-container {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto !important;
+}
+
+
 
 

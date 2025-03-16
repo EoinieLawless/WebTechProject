@@ -54,53 +54,72 @@ export default {
     },
 
     methods: {
-        async fetchStats() {
-            try {
-                const response = await fetch(`http://localhost:9091/api/personalStats/${this.username}`);
-                if (!response.ok) throw new Error("Failed to fetch stats");
-                const data = await response.json();
-                this.mostPlayedGame = data.mostPlayedGame || "N/A";
-                this.bestScore = data.bestScore || 0;
-                this.leaderboardRank = data.leaderboardRank || "N/A";
-                this.personalStats = data.personalStats || [0, 0, 0];
-                this.globalStats = data.globalStats || [0, 0, 0];
-                this.renderCharts();
-            } catch (error) {
-                console.error(error);
-            }
-        },
+		async fetchStats() {
+		    try {
+		        const response = await fetch(`http://localhost:9091/api/personalStats/${this.username}`);
+		        if (!response.ok) throw new Error("Failed to fetch stats");
+		        const data = await response.json();
 
-        renderCharts() {
-            const personalCtx = this.$refs.personalRadarChart.getContext("2d");
-            const globalCtx = this.$refs.globalRadarChart.getContext("2d");
+		        this.mostPlayedGame = data.mostPlayedGame || "N/A";
+		        this.bestScore = data.bestScore || 0;
+		        this.leaderboardRank = data.leaderboardRank || "N/A";
+		        this.personalStats = data.personalStats || [50, 50, 50]; // Start at 50
+		        this.globalStats = data.globalStats || [50, 50, 50]; // Start at 50
 
-            new Chart(personalCtx, {
-                type: 'radar',
-                data: {
-                    labels: ["Precision", "Puzzle Solving", "Luck"],
-                    datasets: [{
-                        label: "Personal Stats",
-                        data: this.personalStats,
-                        backgroundColor: "rgba(54, 162, 235, 0.2)",
-                        borderColor: "rgba(54, 162, 235, 1)",
-                        borderWidth: 1
-                    }]
-                }
-            });
+		        this.renderCharts();
+		    } catch (error) {
+		        console.error(error);
+		    }
+		},
 
-            new Chart(globalCtx, {
-                type: 'radar',
-                data: {
-                    labels: ["Precision", "Puzzle Solving", "Luck"],
-                    datasets: [{
-                        label: "Global Average",
-                        data: this.globalStats,
-                        backgroundColor: "rgba(255, 99, 132, 0.2)",
-                        borderColor: "rgba(255, 99, 132, 1)",
-                        borderWidth: 1
-                    }]
-                }
-            });
-        }
+		renderCharts() {
+		    const personalCtx = this.$refs.personalRadarChart.getContext("2d");
+		    const globalCtx = this.$refs.globalRadarChart.getContext("2d");
+
+		    new Chart(personalCtx, {
+		        type: 'radar',
+		        data: {
+		            labels: ["Precision", "Puzzle Solving", "Luck"],
+		            datasets: [{
+		                label: "Personal Stats",
+		                data: this.personalStats,
+		                backgroundColor: "rgba(54, 162, 235, 0.2)",
+		                borderColor: "rgba(54, 162, 235, 1)",
+		                borderWidth: 2
+		            }]
+		        },
+		        options: {
+		            scales: {
+		                r: {
+		                    suggestedMin: 0,
+		                    suggestedMax: 100
+		                }
+		            }
+		        }
+		    });
+
+		    new Chart(globalCtx, {
+		        type: 'radar',
+		        data: {
+		            labels: ["Precision", "Puzzle Solving", "Luck"],
+		            datasets: [{
+		                label: "Global Average",
+		                data: this.globalStats,
+		                backgroundColor: "rgba(255, 99, 132, 0.2)",
+		                borderColor: "rgba(255, 99, 132, 1)",
+		                borderWidth: 2
+		            }]
+		        },
+		        options: {
+		            scales: {
+		                r: {
+		                    suggestedMin: 0,
+		                    suggestedMax: 100
+		                }
+		            }
+		        }
+		    });
+		}
+
     }
 };

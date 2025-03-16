@@ -1,6 +1,6 @@
 export default {
-	template: `
-	<br><br>
+  template: `
+  <br><br>
     <div class="leaderboard-container">
       <h2 class="leaderboard-title">Leaderboard</h2>
 
@@ -19,139 +19,147 @@ export default {
         </div>
 
         <h3 class="leaderboard-heading">Top Players for {{ selectedGame }}</h3>
-        <ul class="leaderboard-list">
-          <li v-for="(player, index) in formattedLeaderboard" :key="player.id">
-            <span class="rank">
-              <span v-if="player.rank === 1">🥇</span>
-              <span v-else-if="player.rank === 2">🥈</span>
-              <span v-else-if="player.rank === 3">🥉</span>
-              <span v-else>#{{ player.rank }}</span>
-            </span>
-            {{ player.username }} - Score: {{ player.score }}
-          </li>
-        </ul>
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Username</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="player in formattedLeaderboard" :key="player.id">
+              <td class="rank">
+                <span v-if="player.rank === 1">🥇</span>
+                <span v-else-if="player.rank === 2">🥈</span>
+                <span v-else-if="player.rank === 3">🥉</span>
+                <span v-else>#{{ player.rank }}</span>
+              </td>
+              <td>{{ player.username }}</td>
+              <td>{{ player.score }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- Most Active Players Leaderboard -->
       <div v-else>
         <h3 class="leaderboard-heading">Most Active Players</h3>
-        <ul class="leaderboard-list">
-          <li v-for="(player, index) in mostActivePlayers" :key="player">
-            <span class="rank">
-              <span v-if="index === 0">🥇</span>
-              <span v-else-if="index === 1">🥈</span>
-              <span v-else-if="index === 2">🥉</span>
-              <span v-else>#{{ index + 1 }}</span>
-            </span>
-            {{ player }}
-          </li>
-        </ul>
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(player, index) in mostActivePlayers" :key="player">
+              <td class="rank">
+                <span v-if="index === 0">🥇</span>
+                <span v-else-if="index === 1">🥈</span>
+                <span v-else-if="index === 2">🥉</span>
+                <span v-else>#{{ index + 1 }}</span>
+              </td>
+              <td>{{ player }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   `,
-	data() {
-		return {
-			games: [
-				"Flappy Bird",
-				"Aim Trainer",
-				"Memory Match",
-				"Higher or Lower",
-				"Number Sequence Challenge",
-				"Sudoku Time Attack",
-				"Type Racer",
-				"Lucky Number Guess",
-				"Math Speed"
-			],
-			selectedGame: "Flappy Bird",
-			topPlayers: [],
-			mostActivePlayers: [],
-			showTopPlayers: true,
-			lowestScoreWins: ["Guess Number", "Number Sequence Challenge", "Memory Match", "Sudoku Time Attack", "Type Racer"]
-		};
-	},
-	computed: {
-		formattedLeaderboard() {
-			let rank = 1;
-			return this.topPlayers.map((player, index, arr) => {
-				if (index > 0 && player.score !== arr[index - 1].score) {
-					rank = index + 1;
-				}
-				return { ...player, rank };
-			});
-		}
-	},
-	mounted() {
-		this.fetchTopPlayers();
-		this.fetchMostActivePlayers();
-		this.addScopedStyles(); // Ensure styles are applied
-	},
-	methods: {
-		async fetchTopPlayers() {
-		  try {
-		    const response = await fetch(`http://localhost:9091/api/leaderboard/${encodeURIComponent(this.selectedGame)}`);
-		    if (!response.ok) throw new Error("Failed to fetch leaderboard");
-		    
-		    let data = await response.json();
-		    
-		    this.topPlayers = data._embedded?.gameScoreList || [];
 
-		    if (this.lowestScoreWins.includes(this.selectedGame)) {
-		      this.topPlayers.sort((a, b) => a.score - b.score); 
-		    } else {
-		      this.topPlayers.sort((a, b) => b.score - a.score); 
-		    }
+  data() {
+    return {
+      games: [
+        "Flappy Bird", "Aim Trainer", "Memory Match", "Higher or Lower",
+        "Sudoku Time Attack", "Type Racer",
+        "Lucky Number Guess", "Math Speed"
+      ],
+      selectedGame: "Flappy Bird",
+      topPlayers: [],
+      mostActivePlayers: [],
+      showTopPlayers: true,
+      lowestScoreWins: ["Guess Number", "Number Sequence Challenge", "Memory Match", "Sudoku Time Attack", "Type Racer"]
+    };
+  },
 
-		  } catch (error) {
-		    console.error("Fetch Error:", error);
-		  }
-		},
-		async fetchMostActivePlayers() {
-		  try {
-		    const response = await fetch("http://localhost:9091/api/leaderboard/most-active");
-		    if (!response.ok) throw new Error("Failed to fetch most active players");
+  computed: {
+    formattedLeaderboard() {
+      let rank = 1;
+      return this.topPlayers.map((player, index, arr) => {
+        if (index > 0 && player.score !== arr[index - 1].score) {
+          rank = index + 1;
+        }
+        return { ...player, rank };
+      });
+    }
+  },
 
-		    let data = await response.json();
+  mounted() {
+    this.fetchTopPlayers();
+    this.fetchMostActivePlayers();
+    this.addScopedStyles();
+  },
 
-		    if (data.error) {
-		      this.mostActivePlayers = [];
-		      console.warn("No active players found");
-		    } else {
-		      this.mostActivePlayers = data;
-		    }
+  methods: {
+    async fetchTopPlayers() {
+      try {
+        const response = await fetch(`http://localhost:9091/api/leaderboard/${encodeURIComponent(this.selectedGame)}`);
+        if (!response.ok) throw new Error("Failed to fetch leaderboard");
+        
+        let data = await response.json();
+        this.topPlayers = data._embedded?.gameScoreList || [];
 
-		  } catch (error) {
-		    console.error("Fetch Error:", error);
-		  }
-		},
-		addScopedStyles() {
-			if (!document.getElementById("leaderboard-styles")) {
-				const style = document.createElement("style");
-				style.id = "leaderboard-styles";
-				style.innerHTML = `
+        if (this.lowestScoreWins.includes(this.selectedGame)) {
+          this.topPlayers.sort((a, b) => a.score - b.score);
+        } else {
+          this.topPlayers.sort((a, b) => b.score - a.score);
+        }
+      } catch (error) {
+        console.error("Fetch Error:", error);
+      }
+    },
+
+    async fetchMostActivePlayers() {
+      try {
+        const response = await fetch("http://localhost:9091/api/leaderboard/most-active");
+        if (!response.ok) throw new Error("Failed to fetch most active players");
+
+        let data = await response.json();
+        this.mostActivePlayers = data.error ? [] : data;
+      } catch (error) {
+        console.error("Fetch Error:", error);
+      }
+    },
+
+    addScopedStyles() {
+      if (!document.getElementById("leaderboard-styles")) {
+        const style = document.createElement("style");
+        style.id = "leaderboard-styles";
+        style.innerHTML = `
           .leaderboard-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            text-align: center;
             padding: 20px;
-            max-width: 600px;
+            max-width: 700px;
             margin: auto;
-            border-radius: 8px;
-            background: #f9f9f9;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
           }
 
           .leaderboard-title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
+            margin-bottom: 15px;
             color: #2c3e50;
           }
 
           .toggle-buttons {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
             margin-bottom: 15px;
           }
 
@@ -161,8 +169,8 @@ export default {
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            background: #ddd;
             transition: background 0.3s;
+            background: #ddd;
           }
 
           .leaderboard-btn.active {
@@ -172,7 +180,6 @@ export default {
 
           .leaderboard-btn:hover {
             background: #2980b9;
-            color: white;
           }
 
           .game-selection {
@@ -182,48 +189,44 @@ export default {
           .game-selection select {
             padding: 8px;
             font-size: 16px;
-            border-radius: 4px;
+            border-radius: 5px;
             border: 1px solid #ccc;
           }
 
           .leaderboard-heading {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
-            margin-top: 15px;
             color: #34495e;
+            margin: 20px 0 10px;
           }
 
-          .leaderboard-list {
-            list-style: none;
-            padding: 0;
+          .leaderboard-table {
             width: 100%;
-            max-width: 400px;
+            border-collapse: collapse;
+            text-align: center;
+            margin-top: 10px;
           }
 
-          .leaderboard-list li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #ecf0f1;
-            margin: 5px 0;
+          .leaderboard-table th, .leaderboard-table td {
+            border: 1px solid #ddd;
             padding: 10px;
-            border-radius: 5px;
+          }
+
+          .leaderboard-table th {
+            background: #ecf0f1;
             font-size: 16px;
           }
 
-          .leaderboard-list li:hover {
-            background: #d5dbdb;
+          .leaderboard-table tbody tr:hover {
+            background: #f1f1f1;
           }
 
           .rank {
             font-weight: bold;
-            font-size: 18px;
-            width: 30px;
-            display: inline-block;
           }
         `;
-				document.head.appendChild(style);
-			}
-		}
-	}
+        document.head.appendChild(style);
+      }
+    }
+  }
 };
