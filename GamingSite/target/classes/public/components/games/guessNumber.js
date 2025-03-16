@@ -1,5 +1,5 @@
 export default {
-  template: `
+	template: `
     <div class="game-container">
       <h2 class="text-center text-primary">Lucky Number Guess</h2>
       <p class="text-center text-secondary">Guess the number between 1 and 100!</p>
@@ -22,74 +22,74 @@ export default {
       <button class="btn btn-danger" @click="restartGame" v-if="gameOver">Restart</button>
     </div>
   `,
-  data() {
-    return {
-      secretNumber: Math.floor(Math.random() * 100) + 1,
-      playerGuess: "",
-      attempts: 8,
-      message: "Enter a number and submit your guess!",
-      gameOver: false,
-      guesses: []
-    };
-  },
-  methods: {
-    async saveScore(username, score) {
-      try {
-        const response = await fetch("http://localhost:9091/api/games/save", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username: username, game: "Lucky Number Guess", score: score, gameType: "Luck" })
-        });
-        if (!response.ok) {
-          console.error("Failed to save score");
-        }
-      } catch (error) {
-        console.error("Error saving score:", error);
-      }
-    },
-    
-    checkGuess() {
-      const guess = parseInt(this.playerGuess);
-      if (isNaN(guess) || guess < 1 || guess > 100) {
-        this.message = "⚠️ Enter a valid number between 1 and 100!";
-        return;
-      }
-      
-      this.guesses.push(guess);
-      if (guess === this.secretNumber) {
-        this.message = "🎉 You Win! The number was " + this.secretNumber + "!";
-        this.gameOver = true;
-        const username = localStorage.getItem("username") || "Guest";
-        this.saveScore(username, this.attempts); // Score is remaining attempts
-      } else if (guess < this.secretNumber) {
-        this.message = "⬆️ Too Low! Try again.";
-      } else {
-        this.message = "⬇️ Too High! Try again.";
-      }
-      
-      this.attempts--;
-      if (this.attempts === 0 && guess !== this.secretNumber) {
-        this.message = "😢 Out of Attempts! The number was " + this.secretNumber + ".";
-        this.gameOver = true;
-        const username = localStorage.getItem("username") || "Guest";
-        this.saveScore(username, 0); // If player loses, score is 0
-      }
-      
-      this.playerGuess = "";
-    },
-    
-    restartGame() {
-      this.secretNumber = Math.floor(Math.random() * 100) + 1;
-      this.playerGuess = "";
-      this.attempts = 8;
-      this.message = "Enter a number and submit your guess!";
-      this.gameOver = false;
-      this.guesses = [];
-    },
-    
-    injectStyles() {
-      const style = document.createElement("style");
-      style.innerHTML = `
+	data() {
+		return {
+			secretNumber: Math.floor(Math.random() * 100) + 1,
+			playerGuess: "",
+			attempts: 8,
+			message: "Enter a number and submit your guess!",
+			gameOver: false,
+			guesses: []
+		};
+	},
+	methods: {
+		async saveScore(username, score) {
+			try {
+				const response = await fetch("http://localhost:9091/api/games/save", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ username: username, game: "Lucky Number Guess", score: score, gameType: "Luck" })
+				});
+				if (!response.ok) {
+					console.error("Failed to save score");
+				}
+			} catch (error) {
+				console.error("Error saving score:", error);
+			}
+		},
+
+		checkGuess() {
+			const guess = parseInt(this.playerGuess);
+			if (isNaN(guess) || guess < 1 || guess > 100) {
+				this.message = "⚠️ Enter a valid number between 1 and 100!";
+				return;
+			}
+
+			this.guesses.push(guess);
+			if (guess === this.secretNumber) {
+				this.message = "🎉 You Win! The number was " + this.secretNumber + "!";
+				this.gameOver = true;
+				const username = localStorage.getItem("username") || "Guest";
+				this.saveScore(username, this.attempts); // Score is remaining attempts
+			} else if (guess < this.secretNumber) {
+				this.message = "⬆️ Too Low! Try again.";
+			} else {
+				this.message = "⬇️ Too High! Try again.";
+			}
+
+			this.attempts--;
+			if (this.attempts === 0 && guess !== this.secretNumber) {
+				this.message = "😢 Out of Attempts! The number was " + this.secretNumber + ".";
+				this.gameOver = true;
+				const username = localStorage.getItem("username") || "Guest";
+				this.saveScore(username, 0); // If player loses, score is 0
+			}
+
+			this.playerGuess = "";
+		},
+
+		restartGame() {
+			this.secretNumber = Math.floor(Math.random() * 100) + 1;
+			this.playerGuess = "";
+			this.attempts = 8;
+			this.message = "Enter a number and submit your guess!";
+			this.gameOver = false;
+			this.guesses = [];
+		},
+
+		injectStyles() {
+			const style = document.createElement("style");
+			style.innerHTML = `
         .game-container {
           display: flex;
           flex-direction: column;
@@ -143,10 +143,10 @@ export default {
           color: white;
         }
       `;
-      document.head.appendChild(style);
-    }
-  },
-  mounted() {
-    this.injectStyles();
-  }
+			document.head.appendChild(style);
+		}
+	},
+	mounted() {
+		this.injectStyles();
+	}
 };

@@ -1,5 +1,5 @@
 export default {
-    template: `
+	template: `
     <div v-if="authState.isLoggedIn" class="d-flex flex-column border-end" style="background-color: #2c2f33; color: white; min-height: 100vh; width: 250px; transition: width 0.3s;">
 
 	<br><br>
@@ -64,24 +64,24 @@ export default {
     </div>
     `,
 
-    inject: ['authState'],
+	inject: ['authState'],
 
-    data() {
-        return {
-            sidebarOpen: true,
-            gamesOpen: false
-        };
-    },
+	data() {
+		return {
+			sidebarOpen: true,
+			gamesOpen: false
+		};
+	},
 
-    methods: {
-        toggleSidebar() {
-            this.sidebarOpen = !this.sidebarOpen;
-        },
-        toggleSection() {
-            this.gamesOpen = !this.gamesOpen;
-        },
-        changeView(view) {
-            this.$emit('change-view', view);
-        }
-    }
+	methods: {
+		toggleSidebar() {
+			this.sidebarOpen = !this.sidebarOpen;
+		},
+		toggleSection() {
+			this.gamesOpen = !this.gamesOpen;
+		},
+		changeView(view) {
+			this.$emit('change-view', view);
+		}
+	}
 };

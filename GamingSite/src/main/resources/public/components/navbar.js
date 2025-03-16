@@ -1,5 +1,5 @@
 export default {
-  template: `
+	template: `
    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
       <div class="container-fluid d-flex justify-content-between align-items-center">
         
@@ -31,18 +31,18 @@ export default {
    </style>
   `,
 
-  inject: ['authState'],
-  methods: {
-    logout() {
-      localStorage.removeItem("jwt");
-      localStorage.removeItem("username");
-      localStorage.removeItem("role");
-      localStorage.removeItem("currentRole");
-      this.authState.isLoggedIn = false;
-      this.authState.username = "";
-      this.authState.role = "";
-      this.authState.currentRole = "";
-      this.$root.changeView('login');
-    }
-  }
+	inject: ['authState'],
+	methods: {
+		logout() {
+			localStorage.removeItem("jwt");
+			localStorage.removeItem("username");
+			localStorage.removeItem("role");
+			localStorage.removeItem("currentRole");
+			this.authState.isLoggedIn = false;
+			this.authState.username = "";
+			this.authState.role = "";
+			this.authState.currentRole = "";
+			this.$root.changeView('login');
+		}
+	}
 };

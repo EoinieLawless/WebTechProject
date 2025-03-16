@@ -1,5 +1,5 @@
 export default {
-  template: `
+	template: `
     <div class="game-container">
       <h2 class="game-title">Higher or Lower</h2>
       <p class="game-instructions">Guess if the next card is higher or lower!</p>
@@ -22,108 +22,108 @@ export default {
       <p class="game-score">Score: {{ score }}</p>
     </div>
   `,
-  data() {
-    return {
-      deck: [],
-      prevCard: null,
-      currentCard: null,
-      nextCard: null,
-      score: 0,
-      gameOver: false,
-      cooldown: false,
-      revealNext: false,
-    };
-  },
-  mounted() {
-    this.addScopedStyles(); // Dynamically add scoped styles
-    this.initGame();
-  },
-  methods: {
-    async saveScore(username, score) {
-      try {
-        const response = await fetch("http://localhost:9091/api/games/save", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, game: "Higher or Lower", score: score, gameType: "Luck" })
-        });
-        if (!response.ok) {
-          console.error("Failed to save score");
-        }
-      } catch (error) {
-        console.error("Error saving score:", error);
-      }
-    },
-    
-    initGame() {
-      this.deck = this.generateDeck();
-      this.prevCard = null;
-      this.currentCard = this.drawCard();
-      this.nextCard = this.drawCard();
-      this.score = 0;
-      this.gameOver = false;
-      this.cooldown = false;
-      this.revealNext = false;
-    },
-    
-    generateDeck() {
-      let deck = [];
-      for (let i = 1; i <= 20; i++) {
-        deck.push(i);
-      }
-      return this.shuffle(deck);
-    },
-    
-    shuffle(array) {
-      return array.sort(() => Math.random() - 0.5);
-    },
-    
-    drawCard() {
-      return this.deck.length > 0 ? this.deck.pop() : this.generateDeck().pop();
-    },
-    
-    makeGuess(choice) {
-      this.revealNext = true;
-      setTimeout(() => {
-        let correct =
-          (choice === "higher" && this.nextCard > this.currentCard) ||
-          (choice === "lower" && this.nextCard < this.currentCard);
+	data() {
+		return {
+			deck: [],
+			prevCard: null,
+			currentCard: null,
+			nextCard: null,
+			score: 0,
+			gameOver: false,
+			cooldown: false,
+			revealNext: false,
+		};
+	},
+	mounted() {
+		this.addScopedStyles(); // Dynamically add scoped styles
+		this.initGame();
+	},
+	methods: {
+		async saveScore(username, score) {
+			try {
+				const response = await fetch("http://localhost:9091/api/games/save", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ username, game: "Higher or Lower", score: score, gameType: "Luck" })
+				});
+				if (!response.ok) {
+					console.error("Failed to save score");
+				}
+			} catch (error) {
+				console.error("Error saving score:", error);
+			}
+		},
 
-        if (correct) {
-          this.score++;
-          this.prevCard = this.currentCard;
-          this.currentCard = this.nextCard;
-          this.nextCard = this.drawCard();
-          this.revealNext = false;
-        } else {
-          this.gameOver = true;
-          const username = localStorage.getItem("username") || "Guest";
-          this.saveScore(username, this.score);
-          this.startCooldown();
-        }
-      }, 1000);
-    },
-    
-    startCooldown() {
-      this.cooldown = true;
-      let countdown = 5;
-      const timer = setInterval(() => {
-        const countdownElement = document.getElementById("countdown");
-        if (countdownElement) {
-          countdownElement.textContent = countdown;
-        }
-        if (countdown === 0) {
-          clearInterval(timer);
-          this.initGame();
-        }
-        countdown--;
-      }, 1000);
-    },
+		initGame() {
+			this.deck = this.generateDeck();
+			this.prevCard = null;
+			this.currentCard = this.drawCard();
+			this.nextCard = this.drawCard();
+			this.score = 0;
+			this.gameOver = false;
+			this.cooldown = false;
+			this.revealNext = false;
+		},
 
-    addScopedStyles() {
-      if (!document.getElementById("higher-or-lower-styles")) {
-        const style = document.createElement("style");
-        style.id = "higher-or-lower-styles";
-        style.innerHTML = `
+		generateDeck() {
+			let deck = [];
+			for (let i = 1; i <= 20; i++) {
+				deck.push(i);
+			}
+			return this.shuffle(deck);
+		},
+
+		shuffle(array) {
+			return array.sort(() => Math.random() - 0.5);
+		},
+
+		drawCard() {
+			return this.deck.length > 0 ? this.deck.pop() : this.generateDeck().pop();
+		},
+
+		makeGuess(choice) {
+			this.revealNext = true;
+			setTimeout(() => {
+				let correct =
+					(choice === "higher" && this.nextCard > this.currentCard) ||
+					(choice === "lower" && this.nextCard < this.currentCard);
+
+				if (correct) {
+					this.score++;
+					this.prevCard = this.currentCard;
+					this.currentCard = this.nextCard;
+					this.nextCard = this.drawCard();
+					this.revealNext = false;
+				} else {
+					this.gameOver = true;
+					const username = localStorage.getItem("username") || "Guest";
+					this.saveScore(username, this.score);
+					this.startCooldown();
+				}
+			}, 1000);
+		},
+
+		startCooldown() {
+			this.cooldown = true;
+			let countdown = 5;
+			const timer = setInterval(() => {
+				const countdownElement = document.getElementById("countdown");
+				if (countdownElement) {
+					countdownElement.textContent = countdown;
+				}
+				if (countdown === 0) {
+					clearInterval(timer);
+					this.initGame();
+				}
+				countdown--;
+			}, 1000);
+		},
+
+		addScopedStyles() {
+			if (!document.getElementById("higher-or-lower-styles")) {
+				const style = document.createElement("style");
+				style.id = "higher-or-lower-styles";
+				style.innerHTML = `
           .game-container {
             display: flex;
             flex-direction: column;
@@ -217,8 +217,8 @@ export default {
             margin-top: 10px;
           }
         `;
-        document.head.appendChild(style);
-      }
-    }
-  }
+				document.head.appendChild(style);
+			}
+		}
+	}
 };
