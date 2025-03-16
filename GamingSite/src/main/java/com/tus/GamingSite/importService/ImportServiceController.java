@@ -33,17 +33,15 @@ public class ImportServiceController {
         boolean dataExists = gameScoreRepository.count() > 0 || userComplaintRepository.count() > 0 || userRepository.count() > 0;
 
         if (dataExists) {
-            response.put("warning", "⚠️ Existing data detected! Importing will overwrite data.");
+            response.put("warning", "Existing data detected! Importing won't overwrite data.");
         }
 
         try {
             csvImportService.importAll();
-            response.put("status", "✅ Import Completed");
+            response.put("status", "Import Completed");
         } catch (Exception e) {
-            response.put("error", "❌ Failed to process import: " + e.getMessage());
+            response.put("error", "Failed to process import: " + e.getMessage());
         }
-
-        // Combine all imported data into one list for easier frontend processing
         response.put("importedData", gameScoreRepository.findAll());
         return ResponseEntity.ok(response);
     }

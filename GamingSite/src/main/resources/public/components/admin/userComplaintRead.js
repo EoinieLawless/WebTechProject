@@ -40,7 +40,7 @@ export default {
       <transition name="fade">
         <div v-if="showModal" class="delete-modal">
           <div class="modal-content">
-            <h5 class="text-danger fw-bold">⚠ Confirm Deletion</h5>
+            <h5 class="text-danger fw-bold">Confirm Deletion</h5>
             <p>Are you sure you want to delete this complaint?</p>
             <div class="d-flex justify-content-between">
               <button class="btn btn-secondary" @click="showModal = false">Cancel</button>
@@ -125,7 +125,7 @@ export default {
       isLoading: true,
       showModal: false,
       complaintToDelete: null,
-      complaintsPerPage: 5, // Show 5 complaints at a time
+      complaintsPerPage: 5, 
     };
   },
   mounted() {
@@ -151,7 +151,7 @@ export default {
 	},
 
 	loadMoreComplaints() {
-	  if (!Array.isArray(this.complaints)) return; // Ensure it's an array
+	  if (!Array.isArray(this.complaints)) return; 
 
 	  const currentLength = this.visibleComplaints.length;
 	  const nextBatch = this.complaints.slice(currentLength, currentLength + this.complaintsPerPage);

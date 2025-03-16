@@ -28,18 +28,21 @@ public class importService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private ValidationService validationService;
 
     private final String BASE_PATH = "src/main/resources/public/data/";
 
     public void importAll() {
+    	importUsers(new File(BASE_PATH + "GameScorePlayerRegistry.csv"));
         importGameScores(new File(BASE_PATH + "GameScoreLog.csv"));
         importUserComplaints(new File(BASE_PATH + "GameScorePlayerComplaints.csv"));
-        importUsers(new File(BASE_PATH + "GameScorePlayerRegistry.csv"));
     }
 
     public void importGameScores(File file) {
         if (!file.exists()) {
-            System.err.println("❌ File not found: " + file.getAbsolutePath());
+            System.err.println("File not found: " + file.getAbsolutePath());
             return;
         }
 
@@ -51,9 +54,14 @@ public class importService {
                 String username = record.get("USERNAME");
                 String game = record.get("GAME");
 
-                // Check if score already exists
+              
+                if (!validationService.userExists(username)) {
+                    System.err.println("Skipping score for non-existent user: " + username);
+                    continue; 
+                }
+
                 if (gameScoreRepository.existsByUsernameAndGame(username, game)) {
-                    System.out.println("⚠️ Skipping existing score for user: " + username);
+                    System.out.println("Skipping existing score for user: " + username);
                     continue;
                 }
 
@@ -66,7 +74,7 @@ public class importService {
                 scores.add(score);
             }
             gameScoreRepository.saveAll(scores);
-            System.out.println("✅ Game Scores imported successfully.");
+            System.out.println("Game Scores imported successfully.");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,7 +82,7 @@ public class importService {
 
     public void importUserComplaints(File file) {
         if (!file.exists()) {
-            System.err.println("❌ File not found: " + file.getAbsolutePath());
+            System.err.println("File not found: " + file.getAbsolutePath());
             return;
         }
 
@@ -99,7 +107,7 @@ public class importService {
                 complaints.add(complaint);
             }
             userComplaintRepository.saveAll(complaints);
-            System.out.println("✅ User Complaints imported successfully.");
+            System.out.println("User Complaints imported successfully.");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,7 +115,7 @@ public class importService {
 
     public void importUsers(File file) {
         if (!file.exists()) {
-            System.err.println("❌ File not found: " + file.getAbsolutePath());
+            System.err.println("File not found: " + file.getAbsolutePath());
             return;
         }
 
@@ -118,9 +126,8 @@ public class importService {
             for (CSVRecord record : csvParser) {
                 String username = record.get("USERNAME");
 
-                // Check if user already exists
                 if (userRepository.existsByUsername(username)) {
-                    System.out.println("⚠️ Skipping existing user: " + username);
+                    System.out.println("Skipping existing user: " + username);
                     continue;
                 }
 
@@ -128,14 +135,25 @@ public class importService {
                 user.setUsername(username);
                 user.setEmail(record.get("EMAIL"));
                 user.setPassword(record.get("PASSWORD"));
-                user.setRoles(Set.of(Role.valueOf(record.get("ROLE").toUpperCase())));
+
+  
+                String roleStr = record.get("ROLE").toUpperCase();
+                try {
+                    Role role = Role.valueOf(roleStr);
+                    user.setRoles(Set.of(role));
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid role for user: " + username + ". Assigning default USER role.");
+                    user.setRoles(Set.of(Role.USER));
+                }
+
                 users.add(user);
             }
             userRepository.saveAll(users);
-            System.out.println("✅ Users imported successfully.");
+            System.out.println("Users imported successfully.");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }
 

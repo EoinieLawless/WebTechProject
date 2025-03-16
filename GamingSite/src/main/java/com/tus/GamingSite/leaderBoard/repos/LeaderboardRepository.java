@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface LeaderboardRepository extends JpaRepository<GameScore, Long> {
 
-    // Define a list of games where the lower score is better
     List<String> gamesWithLowestScoreWins = List.of("Guess Number", "Memory Match", "Sudoku Time Attack", "Type Racer");
 
     @Query("SELECT gs FROM GameScore gs WHERE gs.game = :game AND gs.score = (SELECT " +

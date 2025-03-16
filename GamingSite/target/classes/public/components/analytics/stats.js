@@ -63,8 +63,8 @@ export default {
 		        this.mostPlayedGame = data.mostPlayedGame || "N/A";
 		        this.bestScore = data.bestScore || 0;
 		        this.leaderboardRank = data.leaderboardRank || "N/A";
-		        this.personalStats = data.personalStats || [50, 50, 50]; // Start at 50
-		        this.globalStats = data.globalStats || [50, 50, 50]; // Start at 50
+		        this.personalStats = data.personalStats || [50, 50, 50]; 
+		        this.globalStats = data.globalStats || [50, 50, 50]; 
 
 		        this.renderCharts();
 		    } catch (error) {

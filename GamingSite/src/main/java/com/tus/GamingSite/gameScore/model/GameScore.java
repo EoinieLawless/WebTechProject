@@ -23,7 +23,7 @@ public class GameScore {
     @Column(nullable = false)
     private int score;
     
-    @Column(nullable = false)  // New column for game category
+    @Column(nullable = false)  
     private String gameType;
 
     public GameScore() {}

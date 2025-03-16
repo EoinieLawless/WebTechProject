@@ -20,7 +20,6 @@ public class GameScoreController {
     @Autowired
     private GameScoreService gameScoreService;
 
-    // Save score with gameType
     @PostMapping("/save")
     public ResponseEntity<EntityModel<GameScoreDTO>> saveScore(@RequestBody GameScoreDTO gameScoreDTO) {
         GameScore savedScore = gameScoreService.saveScore(gameScoreDTO);
@@ -31,7 +30,7 @@ public class GameScoreController {
             savedScore.getGameType()
         );
 
-        // Add HATEOAS links
+        // HATEOAS links
         EntityModel<GameScoreDTO> entityModel = EntityModel.of(responseDto);
         entityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GameScoreController.class)
                 .getScoresByGame(savedScore.getGame())).withRel("game-scores"));

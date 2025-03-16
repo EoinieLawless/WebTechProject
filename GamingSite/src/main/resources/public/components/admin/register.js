@@ -138,7 +138,7 @@ export default {
 		  ajax: {
 		    url: '/api/admin/users',
 		    dataSrc: function(json) {
-		      return json._embedded?.userList || []; // Extract the actual users array
+		      return json._embedded?.userList || [];
 		    },
 		    headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
 		  },
@@ -216,7 +216,6 @@ export default {
 	      throw new Error(responseData.error || "Failed to delete user");
 	    }
 
-	    // Instantly remove user from DataTable without full reload
 	    this.dataTable.row($(`button[data-id="${this.userIdToDelete}"]`).closest('tr')).remove().draw(false);
 
 	    this.showAlert("User deleted successfully!", "alert-success");
