@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.tus.GamingSite.user_complaint_system.dto.UserComplaintDTO;
 import com.tus.GamingSite.user_complaint_system.model.UserComplaint;
+import com.tus.GamingSite.user_complaint_system.model.UserComplaintAgreement;
 import com.tus.GamingSite.user_complaint_system.repos.UserComplaintRepository;
+import com.tus.GamingSite.user_complaint_system.repos.UserComplaintAgreementRepository;
+import com.tus.GamingSite.users_manager.model.User;
+import com.tus.GamingSite.users_manager.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,6 +21,12 @@ public class UserComplaintService {
 
     @Autowired
     private UserComplaintRepository complaintRepository;
+
+    @Autowired
+    private UserComplaintAgreementRepository agreementRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public UserComplaintDTO submitComplaint(UserComplaintDTO complaintDTO) {
         UserComplaint complaint = new UserComplaint(complaintDTO.getUsername(), complaintDTO.getEmail(), complaintDTO.getMessage());
@@ -41,6 +51,21 @@ public class UserComplaintService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting complaint: " + e.getMessage());
         }
     }
+
+    public void agreeWithComplaint(Long complaintId, String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        UserComplaint complaint = complaintRepository.findById(complaintId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Complaint not found"));
+
+        boolean alreadyAgreed = agreementRepository.existsByUserAndComplaint(user, complaint);
+        if (!alreadyAgreed) {
+            UserComplaintAgreement agreement = new UserComplaintAgreement(user, complaint);
+            agreementRepository.save(agreement);
+        }
+    }
+
 
 
 

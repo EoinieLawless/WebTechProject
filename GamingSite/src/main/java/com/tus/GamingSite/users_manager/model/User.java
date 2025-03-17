@@ -29,6 +29,6 @@ public class User {
     private Set<Role> roles;
 
     public User() {
-        this.roles = Set.of(Role.USER); // Ensure default role is USER
+        this.roles = Set.of(Role.USER); 
     }
 }

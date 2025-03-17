@@ -60,6 +60,11 @@ export default {
             <button class="btn btn-info w-100 mb-2 d-flex align-items-center" @click="changeView('userComplaintWrite')">
                 <i class="bi bi-pencil-square me-2"></i> Post Complaint
             </button>
+			<div v-if="authState.currentRole === 'USER'">
+			<button class="btn btn-info w-100 mb-2 d-flex align-items-center" @click="changeView('userComplaintForm')">
+			                <i class="bi bi-pencil-square me-2"></i> Complaint Form
+			</button>
+			</div>
         </aside>
     </div>
     `,

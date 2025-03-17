@@ -1,6 +1,7 @@
 package com.tus.GamingSite.users_manager.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,13 +60,8 @@ public class AdminController {
     // Delete a user by ID (secured for ADMIN)
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<EntityModel<String>> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        
-        EntityModel<String> entityModel = EntityModel.of("User deleted successfully");
-        entityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AdminController.class)
-                .getAllUsers()).withRel("all-users"));
-
-        return ResponseEntity.ok(entityModel);
+    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable Long id) {
+        return userService.deleteUser(id);
     }
+
 }

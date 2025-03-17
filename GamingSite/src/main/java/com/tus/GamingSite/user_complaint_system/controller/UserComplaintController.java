@@ -10,7 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.tus.GamingSite.user_complaint_system.dto.UserComplaintDTO;
+import com.tus.GamingSite.user_complaint_system.model.UserComplaint;
+import com.tus.GamingSite.user_complaint_system.model.UserComplaintAgreement;
+import com.tus.GamingSite.user_complaint_system.repos.UserComplaintAgreementRepository;
+import com.tus.GamingSite.user_complaint_system.repos.UserComplaintRepository;
 import com.tus.GamingSite.user_complaint_system.service.UserComplaintService;
+import com.tus.GamingSite.users_manager.model.User;
+import com.tus.GamingSite.users_manager.repository.UserRepository;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,6 +31,16 @@ public class UserComplaintController {
 
     @Autowired
     private UserComplaintService complaintService;
+    
+    @Autowired
+    private UserComplaintRepository complaintRepository;
+
+    @Autowired
+    private UserComplaintAgreementRepository agreementRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
+
 
     @PostMapping("/submit")
     public ResponseEntity<EntityModel<UserComplaintDTO>> submitComplaint(@RequestBody UserComplaintDTO complaintDTO) {
@@ -75,6 +91,37 @@ public class UserComplaintController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
+    
 
+    @PostMapping("/{id}/agree")
+    public ResponseEntity<Map<String, String>> agreeWithComplaint(@PathVariable Long id, @RequestParam String username) {
+        User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        UserComplaint complaint = complaintRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Complaint not found"));
+
+        if (agreementRepository.existsByUserAndComplaint(user, complaint)) {
+            return ResponseEntity.ok(Map.of("message", "User already agreed to this complaint"));
+        }
+
+        UserComplaintAgreement agreement = new UserComplaintAgreement(user, complaint);
+        agreementRepository.save(agreement);
+
+        return ResponseEntity.ok(Map.of("message", "Agreement recorded successfully"));
+    }
+    
+    @GetMapping("/{id}/agreed-users")
+    public ResponseEntity<Map<String, List<String>>> getAgreedUsers(@PathVariable Long id) {
+        UserComplaint complaint = complaintRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Complaint not found"));
+
+        List<String> agreedUsers = agreementRepository.findByComplaint(complaint)
+            .stream()
+            .map(agreement -> agreement.getUser().getUsername())
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(Map.of("agreedUsers", agreedUsers));
+    }
 
 }

@@ -1,10 +1,12 @@
 package com.tus.GamingSite.users_manager.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,14 +25,13 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     
     public User registerUser(User user) {
-        // Check if username already exists
+        
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new UsernameAlreadyExistsException("Username already taken");
         }
-        // Encrypt the password
+        
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // Assign default role as USER
         user.setRoles(Set.of(Role.USER));
 
         return userRepository.save(user);
@@ -46,7 +47,7 @@ public class UserService {
     }
 
 
-    public void deleteUser(Long id) {
+    public ResponseEntity<Map<String, String>> deleteUser(Long id) {
         User user = userRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
@@ -55,7 +56,11 @@ public class UserService {
         }
 
         userRepository.deleteById(id);
+
+        return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
     }
+
+
 
     public User updateUser(Long id, User updatedUser) {
         User user = userRepository.findById(id)

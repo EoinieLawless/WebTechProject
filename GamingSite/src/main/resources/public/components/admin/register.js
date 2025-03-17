@@ -79,7 +79,7 @@ export default {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Confirm Deletion</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button"  @click="closeModal" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -87,7 +87,7 @@ export default {
               Are you sure you want to delete this user?
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+			<button type="button" class="btn btn-secondary" @click="closeModal">Cancel</button>
               <button type="button" class="btn btn-danger" @click="confirmDelete">Delete</button>
             </div>
           </div>
@@ -150,6 +150,7 @@ export default {
 		        `<button class="btn btn-danger btn-sm delete-user" data-id="${row.id}" data-roles="${row.roles.join(',')}">Delete</button>`
 		    }
 		  ]
+
 		});
     },
 
@@ -197,6 +198,12 @@ export default {
         this.isLoading = false;
       }
     },
+	
+	closeModal() {
+	  this.userIdToDelete = null;
+	  $("#confirmDeleteModal").modal("hide");
+	},
+
 
 	async confirmDelete() {
 	  if (!this.userIdToDelete) return;
@@ -210,20 +217,22 @@ export default {
 	      }
 	    });
 
-	    const responseData = await response.json();
-
-	    if (!response.ok) {
+	    if (!response.ok && response.status !== 204) {
+	      const responseData = await response.json().catch(() => ({})); 
 	      throw new Error(responseData.error || "Failed to delete user");
 	    }
 
-	    this.dataTable.row($(`button[data-id="${this.userIdToDelete}"]`).closest('tr')).remove().draw(false);
+	    // Hide the modal first
+	    $("#confirmDeleteModal").modal("hide");
 
+	    // Refresh the table data
+	    this.dataTable.ajax.reload(null, false); // Reload without resetting pagination
+
+	    // Show a success message
 	    this.showAlert("User deleted successfully!", "alert-success");
 
 	  } catch (error) {
 	    this.showAlert("Error deleting user: " + error.message, "alert-danger");
-	  } finally {
-	    $('#confirmDeleteModal').modal('hide');
 	  }
 	},
 

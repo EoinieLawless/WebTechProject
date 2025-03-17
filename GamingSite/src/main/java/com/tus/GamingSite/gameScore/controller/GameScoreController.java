@@ -81,4 +81,6 @@ public class GameScoreController {
 
         return ResponseEntity.ok(CollectionModel.of(entityModels));
     }
+    
+    
 }

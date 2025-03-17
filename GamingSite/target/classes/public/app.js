@@ -91,6 +91,7 @@ const restrictedComponentFiles = {
 		"games/higherOrLower.js",
 		"games/guessNumber.js",
 		"analytics/userComplaintWrite.js",
+		"analytics/userComplaintForm.js",
 	]
 };
 

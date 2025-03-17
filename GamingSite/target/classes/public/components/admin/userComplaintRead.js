@@ -56,24 +56,20 @@ export default {
           max-width: 700px;
           margin: auto;
         }
-
         .complaint-card {
           transition: all 0.3s ease-in-out;
           border-radius: 8px;
           background: white;
           overflow: hidden;
         }
-
         .complaint-card:hover {
           box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
           transform: scale(1.02);
         }
-
         .complaint-message {
           font-size: 16px;
           color: #333;
         }
-
         /* Loading Spinner */
         .loading-container {
           display: flex;
@@ -81,14 +77,12 @@ export default {
           align-items: center;
           margin-top: 50px;
         }
-
         /* Load More Button */
         .btn-primary {
           font-size: 16px;
           padding: 8px 16px;
           border-radius: 6px;
         }
-
         /* Delete Confirmation Modal */
         .delete-modal {
           position: fixed;
@@ -102,12 +96,10 @@ export default {
           text-align: center;
           min-width: 300px;
         }
-
         .modal-content {
           max-width: 350px;
           margin: auto;
         }
-
         /* Fade Animation for Modal */
         .fade-enter-active, .fade-leave-active {
           transition: opacity 0.3s;
@@ -125,72 +117,77 @@ export default {
       isLoading: true,
       showModal: false,
       complaintToDelete: null,
-      complaintsPerPage: 5, 
+      complaintsPerPage: 5,
     };
   },
   mounted() {
     this.fetchComplaints();
   },
   methods: {
-	async fetchComplaints() {
-	  try {
-	    const response = await fetch("http://localhost:9091/api/complaints/all");
-	    if (!response.ok) throw new Error("Failed to fetch complaints");
+    async fetchComplaints() {
+      try {
+        const response = await fetch("http://localhost:9091/api/complaints/all");
+        if (!response.ok) throw new Error("Failed to fetch complaints");
 
-	    let data = await response.json();
+        let data = await response.json();
 
-	    this.complaints = data._embedded?.userComplaintDTOList || [];
+        this.complaints = data._embedded?.userComplaintDTOList || [];
+        this.visibleComplaints = this.complaints.slice(0, this.complaintsPerPage);
+      } catch (error) {
+        console.error("Error fetching complaints:", error);
+        this.complaints = [];
+      } finally {
+        this.isLoading = false;
+      }
+    },
 
-	    this.visibleComplaints = this.complaints.slice(0, this.complaintsPerPage);
-	  } catch (error) {
-	    console.error("Error fetching complaints:", error);
-	    this.complaints = []; 
-	  } finally {
-	    this.isLoading = false;
-	  }
-	},
-
-	loadMoreComplaints() {
-	  if (!Array.isArray(this.complaints)) return; 
-
-	  const currentLength = this.visibleComplaints.length;
-	  const nextBatch = this.complaints.slice(currentLength, currentLength + this.complaintsPerPage);
-	  this.visibleComplaints = [...this.visibleComplaints, ...nextBatch];
-	},
+    loadMoreComplaints() {
+      if (!Array.isArray(this.complaints)) return;
+      const currentLength = this.visibleComplaints.length;
+      const nextBatch = this.complaints.slice(currentLength, currentLength + this.complaintsPerPage);
+      this.visibleComplaints = [...this.visibleComplaints, ...nextBatch];
+    },
 
     showDeleteConfirmation(id) {
       this.complaintToDelete = id;
       this.showModal = true;
     },
 
-	async confirmDelete() {
-	  if (!this.complaintToDelete) return;
+    async confirmDelete() {
+      if (!this.complaintToDelete) return;
 
-	  try {
-	    const response = await fetch(`http://localhost:9091/api/complaints/delete/${this.complaintToDelete}`, {
-	      method: "DELETE",
-	      headers: {
-	        "Authorization": `Bearer ${localStorage.getItem('jwt')}`,
-	        "Content-Type": "application/json"
-	      }
-	    });
+      // Find the complaint object using its ID
+      const complaint = this.complaints.find(c => c.id === this.complaintToDelete);
+      if (!complaint || !complaint._links || !complaint._links["delete-complaint"]) {
+        console.error("Delete link not found for complaint id:", this.complaintToDelete);
+        return;
+      }
 
-	    const responseData = await response.json();
+      // Use the HATEOAS delete link from the complaint
+      const deleteUrl = complaint._links["delete-complaint"].href;
+      
+      try {
+        const response = await fetch(deleteUrl, {
+          method: "DELETE",
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem('jwt')}`,
+            "Content-Type": "application/json"
+          }
+        });
 
-	    if (!response.ok) {
-	      throw new Error(responseData.error || "Failed to delete complaint");
-	    }
+        if (!response.ok) {
+          const responseData = await response.json();
+          throw new Error(responseData.error || "Failed to delete complaint");
+        }
 
-	    // Remove from UI
-	    this.complaints = this.complaints.filter(complaint => complaint.id !== this.complaintToDelete);
-	    this.visibleComplaints = this.visibleComplaints.filter(complaint => complaint.id !== this.complaintToDelete);
-
-	    this.showModal = false;
-	  } catch (error) {
-	    console.error("Error deleting complaint:", error);
-	    alert(error.message); 
-	  }
-	}
-
+        // Remove the deleted complaint from the UI
+        this.complaints = this.complaints.filter(c => c.id !== this.complaintToDelete);
+        this.visibleComplaints = this.visibleComplaints.filter(c => c.id !== this.complaintToDelete);
+        this.showModal = false;
+      } catch (error) {
+        console.error("Error deleting complaint:", error);
+        alert(error.message);
+      }
+    }
   }
 };

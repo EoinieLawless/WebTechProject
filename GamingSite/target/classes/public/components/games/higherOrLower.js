@@ -18,7 +18,7 @@ export default {
         <button class="game-btn game-btn-danger" @click="makeGuess('lower')" :disabled="cooldown">Lower</button>
       </div>
 
-      <p class="game-message" v-if="gameOver">Incorrect! Streak is lost, try again in <span id="countdown">5</span> seconds...</p>
+      <p class="game-message" v-if="gameOver">Incorrect! Streak is lost, try again in <span id="countdown">3</span> seconds...</p>
       <p class="game-score">Score: {{ score }}</p>
     </div>
   `,
@@ -35,7 +35,7 @@ export default {
 		};
 	},
 	mounted() {
-		this.addScopedStyles(); // Dynamically add scoped styles
+		this.addScopedStyles(); 
 		this.initGame();
 	},
 	methods: {
@@ -105,7 +105,7 @@ export default {
 
 		startCooldown() {
 			this.cooldown = true;
-			let countdown = 5;
+			let countdown = 3;
 			const timer = setInterval(() => {
 				const countdownElement = document.getElementById("countdown");
 				if (countdownElement) {
