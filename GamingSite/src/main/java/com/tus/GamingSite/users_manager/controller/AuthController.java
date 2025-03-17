@@ -32,18 +32,17 @@ public class AuthController {
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private UserService userService; // Added to handle registration
+    private UserService userService; 
 
     @Autowired
     private JwtUtil jwtUtil;
 
-    // DTO for login requests
     public static class AuthRequest {
         public String username;
         public String password;
     }
 
-    // DTO for login responses
+
     public static class AuthResponse {
         public String jwt;
         public String username;
@@ -56,14 +55,14 @@ public class AuthController {
         }
     }
 
-    // DTO for registration requests
+
     public static class RegisterRequest {
         public String username;
         public String password;
         public String email;
     }
 
-    // User Login Endpoint
+
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authRequest) throws Exception {
         try {
@@ -77,7 +76,6 @@ public class AuthController {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.username);
         final String jwt = jwtUtil.generateToken(userDetails);
 
-        // Extract roles as a List<String>
         List<String> roles = userDetails.getAuthorities().stream()
             .map(authority -> authority.getAuthority())
             .collect(Collectors.toList());
@@ -93,7 +91,7 @@ public class AuthController {
     }
 
 
-    // User Registration Endpoint
+ 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
         // Validate required fields

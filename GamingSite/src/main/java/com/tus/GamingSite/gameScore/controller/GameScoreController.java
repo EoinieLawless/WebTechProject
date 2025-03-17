@@ -30,7 +30,7 @@ public class GameScoreController {
             savedScore.getGameType()
         );
 
-        // HATEOAS links
+        // HATEOAS links are here 
         EntityModel<GameScoreDTO> entityModel = EntityModel.of(responseDto);
         entityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GameScoreController.class)
                 .getScoresByGame(savedScore.getGame())).withRel("game-scores"));

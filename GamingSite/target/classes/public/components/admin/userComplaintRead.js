@@ -156,14 +156,13 @@ export default {
     async confirmDelete() {
       if (!this.complaintToDelete) return;
 
-      // Find the complaint object using its ID
       const complaint = this.complaints.find(c => c.id === this.complaintToDelete);
       if (!complaint || !complaint._links || !complaint._links["delete-complaint"]) {
         console.error("Delete link not found for complaint id:", this.complaintToDelete);
         return;
       }
 
-      // Use the HATEOAS delete link from the complaint
+      //Hateoas is here
       const deleteUrl = complaint._links["delete-complaint"].href;
       
       try {

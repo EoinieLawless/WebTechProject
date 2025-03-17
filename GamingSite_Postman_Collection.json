@@ -1,0 +1,307 @@
+{
+    "info": {
+        "name": "Gaming Site API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Game Scores",
+            "item": [
+                {
+                    "name": "Save Score",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"username\": \"testUser\", \"game\": \"Flappy Bird\", \"score\": 100, \"gameType\": \"Precision\"}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:9091/api/games/save",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "games",
+                                "save"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Scores By Game",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:9091/api/games/Flappy Bird/scores",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "games",
+                                "Flappy Bird",
+                                "scores"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Leaderboard",
+            "item": [
+                {
+                    "name": "Get Leaderboard by Game",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:9091/api/leaderboard/Flappy Bird",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "leaderboard",
+                                "Flappy Bird"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Most Active Players",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:9091/api/leaderboard/most-active",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "leaderboard",
+                                "most-active"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "User Authentication",
+            "item": [
+                {
+                    "name": "User Login",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"username\": \"testUser\", \"password\": \"password123\"}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:9091/api/auth/login",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "User Registration",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"username\": \"newUser\", \"password\": \"password123\", \"email\": \"test@example.com\"}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:9091/api/auth/register",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "register"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin Controls",
+            "item": [
+                {
+                    "name": "Get All Users",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:9091/api/admin/users",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "admin",
+                                "users"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete User",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://localhost:9091/api/admin/users/1",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "admin",
+                                "users",
+                                "1"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "User Complaints",
+            "item": [
+                {
+                    "name": "Submit Complaint",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"username\": \"testUser\", \"message\": \"This is a complaint\"}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:9091/api/complaints/submit",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "complaints",
+                                "submit"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Complaints",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:9091/api/complaints/all",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "complaints",
+                                "all"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Personal Stats",
+            "item": [
+                {
+                    "name": "Get User Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:9091/api/personalStats/testUser",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "personalStats",
+                                "testUser"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Global Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:9091/api/personalStats/global-stats",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "personalStats",
+                                "global-stats"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Data Import",
+            "item": [
+                {
+                    "name": "Import Data Files",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:9091/api/admin/files/import",
+                            "host": [
+                                "http://localhost:9091"
+                            ],
+                            "path": [
+                                "api",
+                                "admin",
+                                "files",
+                                "import"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

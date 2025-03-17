@@ -71,7 +71,7 @@ export default {
 				if (!response.ok) throw new Error("Failed to submit complaint");
 
 				this.successMessage = "Complaint submitted successfully!";
-				this.message = ""; // Clear message field
+				this.message = "";
 
 			} catch (error) {
 				console.error("Error submitting complaint:", error);
