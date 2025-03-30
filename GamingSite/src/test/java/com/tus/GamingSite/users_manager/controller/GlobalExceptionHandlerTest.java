@@ -19,16 +19,25 @@ public class GlobalExceptionHandlerTest {
     @Test
     @WithMockUser(authorities = "ADMIN")
     void testUsernameAlreadyExistsException() throws Exception {
-        // JSON payload with escaped double quotes
         String jsonPayload = "{"
-                + "\"username\": \"admin\","
+                + "\"username\": \"TestNameHandler\","
                 + "\"password\": \"123\","
-                + "\"roles\": [\"SUPPORT_ENGINEER\"]"
+                + "\"email\": \"admin@example.com\","
+                + "\"roles\": [\"USER\"]"
                 + "}";
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/register")  // Adjust this URL based on your actual controller endpoint
-                        .contentType("application/json")
-                        .content(jsonPayload))  // Example payload with roles included
-                .andExpect(MockMvcResultMatchers.status().isConflict());  // Expect a 409 conflict status
+        // First call - successful
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/register")
+                .contentType("application/json")
+                .content(jsonPayload))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        // Second call - should now trigger the exception
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/register")
+                .contentType("application/json")
+                .content(jsonPayload))
+                .andExpect(MockMvcResultMatchers.status().isConflict());
     }
+
+
 }

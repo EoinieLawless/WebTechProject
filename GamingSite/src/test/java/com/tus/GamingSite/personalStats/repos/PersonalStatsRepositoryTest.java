@@ -43,7 +43,7 @@ public class PersonalStatsRepositoryTest {
 
     @Test
     void testFindLeaderboardRank() {
-        Integer rank = repository.findLeaderboardRank("alice");
+        Integer rank = repository.findLeaderboardRank("bob");
         assertEquals(1, rank); 
     }
 

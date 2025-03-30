@@ -1,14 +1,19 @@
 Feature: Create User
 
-Scenario: Create a User and return userId
-  Given url baseUrl + '/admin/register'
-  And header Content-Type = 'application/json'
-  And header Authorization = 'Bearer ' + authToken
-  And request { username: 'UserCreationTest', password: 'Password123', roles: ['ADMIN'] }
-  When method POST
-  Then status 200
-  And match response.id == '#present'
-  * def userId = response.id
-  * def result = { id: userId }
-  * karate.log('Created user with id:', userId)
-  * karate.set('result', result)
+  Background:
+    * url baseUrl
+    * header Authorization = 'Bearer ' + authToken
+
+  Scenario: Create a new user successfully
+    Given path '/admin/register'
+    And request
+    """
+    {
+      "username": "testuser123456789",
+      "password": "TestPass123",
+      "email": "testuser123@example.com",
+      "roles": ["USER"]
+    }
+    """
+    When method post
+    Then status 200

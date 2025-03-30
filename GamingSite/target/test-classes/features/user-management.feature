@@ -1,10 +1,13 @@
 Feature: User Management
 
-  Background:
-    * url 'http://localhost:9091'
+	Background:
+	  * url baseUrl
+	  * header Authorization = 'Bearer ' + authToken
+
 
   Scenario: Admin can register a new user
-    Given path '/api/admin/register'
+	 Given path '/admin/register'
+
     And request
     """
     {
@@ -18,7 +21,8 @@ Feature: User Management
     Then status 200
 
   Scenario: Prevent duplicate usernames
-    Given path '/api/admin/register'
+		Given path '/admin/register'
+
     And request
     """
     {

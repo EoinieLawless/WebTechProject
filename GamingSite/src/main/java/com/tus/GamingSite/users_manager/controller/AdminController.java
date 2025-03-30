@@ -22,24 +22,27 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    // Register a new user (secured for ADMIN)
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<EntityModel<User>> registerUser(@RequestBody User user) {
-        if (user.getRoles() == null || user.getRoles().isEmpty()) {
-            return ResponseEntity.badRequest().build();
+        if (user == null || user.getRoles() == null || user.getRoles().isEmpty()) {
+            return ResponseEntity.badRequest().build(); // early exit
         }
 
         User savedUser = userService.registerUser(user);
 
-        EntityModel<User> entityModel = EntityModel.of(savedUser);
-        entityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AdminController.class)
-                .getAllUsers()).withRel("all-users"));
-        entityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AdminController.class)
-                .deleteUser(savedUser.getId())).withRel("delete-user"));
+        if (savedUser == null) {
+            return ResponseEntity.internalServerError().body(null); // stop here
+        }
 
-        return ResponseEntity.ok(entityModel);
+        return ResponseEntity.ok(
+            EntityModel.of(savedUser)
+                .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AdminController.class).getAllUsers()).withRel("all-users"))
+                .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AdminController.class).deleteUser(savedUser.getId())).withRel("delete-user"))
+        );
     }
+
+
 
     // Get all users (secured for ADMIN)
     @PreAuthorize("hasAuthority('ADMIN')")

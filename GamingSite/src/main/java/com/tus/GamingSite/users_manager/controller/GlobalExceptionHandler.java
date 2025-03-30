@@ -11,9 +11,9 @@ import com.tus.GamingSite.users_manager.exceptions.UsernameAlreadyExistsExceptio
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UsernameAlreadyExistsException.class)
-    public ResponseEntity<String> handleUsernameAlreadyExistsException(UsernameAlreadyExistsException ex) {
-        // Return custom error response
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+	@ExceptionHandler(UsernameAlreadyExistsException.class)
+	public ResponseEntity<String> handleUsernameAlreadyExistsException(UsernameAlreadyExistsException ex) {
+	    return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT); // 409
+	}
+
 }
