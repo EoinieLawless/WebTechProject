@@ -42,7 +42,7 @@ class GameScoreControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(gameScoreController).build();
-        
+
         sampleScore = new GameScore("player1", "Flappy Bird", 10, "Precision");
         sampleScoreDTO = new GameScoreDTO("player1", "Flappy Bird", 10, "Precision");
     }
@@ -52,8 +52,8 @@ class GameScoreControllerTest {
         when(gameScoreService.saveScore(any(GameScoreDTO.class))).thenReturn(sampleScore);
 
         mockMvc.perform(post("/api/games/save")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(sampleScoreDTO)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(sampleScoreDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("player1"))
                 .andExpect(jsonPath("$.game").value("Flappy Bird"))
@@ -69,7 +69,8 @@ class GameScoreControllerTest {
 
         mockMvc.perform(get("/api/games/Flappy Bird/scores"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded[0].game").value("Flappy Bird"));
+                .andExpect(jsonPath("$.content[0].game").value("Flappy Bird"));
+
     }
 
     @Test
@@ -80,6 +81,7 @@ class GameScoreControllerTest {
 
         mockMvc.perform(get("/api/games/user/player1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded[0].username").value("player1"));
+                .andExpect(jsonPath("$.content[0].username").value("player1"));
+
     }
 }

@@ -1,0 +1,47 @@
+pipeline {
+  agent any
+
+  tools {
+    maven 'Maven 3.9.4'   
+    jdk 'JDK 17'          
+  }
+
+  environment {
+    SONAR_TOKEN = credentials('sonar-token') // store in Jenkins > Credentials
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Build & Test') {
+      steps {
+        sh 'mvn clean verify'
+      }
+    }
+
+    stage('SonarQube Analysis') {
+      steps {
+        withSonarQubeEnv('SonarQube') {
+          sh '''
+            mvn sonar:sonar \
+              -Dsonar.projectKey=GamingSite \
+              -Dsonar.host.url=http://sonarqube:9000 \
+              -Dsonar.login=$SONAR_TOKEN
+          '''
+        }
+      }
+    }
+
+    stage("Quality Gate") {
+      steps {
+        timeout(time: 1, unit: 'MINUTES') {
+          waitForQualityGate abortPipeline: true
+        }
+      }
+    }
+  }
+}

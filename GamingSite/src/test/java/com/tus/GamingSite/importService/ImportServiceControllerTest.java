@@ -16,9 +16,13 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class ImportServiceControllerTest {
+
 
     @Mock
     private importService csvImportService;
@@ -34,13 +38,8 @@ class ImportServiceControllerTest {
 
     @InjectMocks
     private ImportServiceController importServiceController;
-
-    @BeforeEach
-    void setUp() {
-        when(gameScoreRepository.count()).thenReturn(0L);
-        when(userComplaintRepository.count()).thenReturn(0L);
-        when(userRepository.count()).thenReturn(0L);
-    }
+    
+   
 
     @Test
     void testImportFiles_Success() {

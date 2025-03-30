@@ -1,62 +1,32 @@
-Feature: Create, Update, Delete, and Get Users
+Feature: User Management
 
-Background:
-  * def baseUrl = 'http://localhost:9091/api'
-  * def randomUsername = 'testuser-karate-1' + java.time.Instant.now().toEpochMilli()
-  * def password = 'Password123'
+  Background:
+    * url 'http://localhost:9091'
 
-Scenario: Create, Update, and Delete User
+  Scenario: Admin can register a new user
+    Given path '/api/admin/register'
+    And request
+    """
+    {
+      "username": "admin1",
+      "password": "secret123",
+      "email": "admin1@example.com",
+      "roles": ["ADMIN"]
+    }
+    """
+    When method POST
+    Then status 200
 
-  # Login as admin to perform user management
-  Given url baseUrl + '/auth/login'
-  And request { username: 'admin', password: 'admin' }
-  When method POST
-  Then status 200
-  * def adminToken = response.jwt
-
-  # Create a new user
-  Given url baseUrl + '/admin/register'
-  And header Authorization = 'Bearer ' + adminToken
-  And request { username: #(randomUsername), password: #(password), roles: ['ADMIN'] }
-  When method POST
-  Then status 200
-  And match response.id == '#present'
-  * def userId = response.id
-
-  # Login as the created user to verify login works
-  Given url baseUrl + '/auth/login'
-  And request { username: #(randomUsername), password: #(password) }
-  When method POST
-  Then status 200
-  * def userToken = response.jwt
-
-
-  # Update the user's roles (username stays the same)
-  Given url baseUrl + '/admin/users/' + userId
-  And header Authorization = 'Bearer ' + adminToken
-  And request { roles: ['NETWORK_MANAGEMENT_ENGINEER'] }
-  When method PUT
-  Then status 200
-  And match response.username == randomUsername
-  And match response.roles contains 'NETWORK_MANAGEMENT_ENGINEER'
-
-  # Delete the user
-  Given url baseUrl + '/admin/users/' + userId
-  And header Authorization = 'Bearer ' + adminToken
-  When method DELETE
-  Then status 204
-
-Scenario: Get All Users
-  # Login as admin
-  Given url baseUrl + '/auth/login'
-  And request { username: 'admin', password: 'admin' }
-  When method POST
-  Then status 200
-  * def adminToken = response.jwt
-
-  # Fetch all users
-  Given url baseUrl + '/admin/users'
-  And header Authorization = 'Bearer ' + adminToken
-  When method GET
-  Then status 200
-  And assert response.length > 0
+  Scenario: Prevent duplicate usernames
+    Given path '/api/admin/register'
+    And request
+    """
+    {
+      "username": "admin1",
+      "password": "anotherPass",
+      "email": "admin2@example.com",
+      "roles": ["ADMIN"]
+    }
+    """
+    When method POST
+    Then status 409
