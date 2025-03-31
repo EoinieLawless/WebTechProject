@@ -1,6 +1,6 @@
 function fn() {
   var config = {
-	baseUrl: 'http://host.docker.internal:9091/api',
+    baseUrl: 'http://localhost:9091/api',
     authToken: ''
   };
 
