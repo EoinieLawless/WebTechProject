@@ -1,8 +1,11 @@
 Feature: User Management
 
 	Background:
+	  * def login = call read('classpath:features/login.feature') { username: 'admin', password: 'admin' }
+	  * def token = login.jwt
 	  * url baseUrl
-	  * header Authorization = 'Bearer ' + authToken
+	  * header Authorization = 'Bearer ' + token
+
 
 
   Scenario: Admin can register a new user

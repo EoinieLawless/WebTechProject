@@ -1,148 +1,108 @@
-//package com.tus.GamingSite.test.selenium;
-//
-//import java.time.Duration;
-//import java.util.HashMap;
-//import java.util.Map;
-//
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.openqa.selenium.By;
-//import org.openqa.selenium.Dimension;
-//import org.openqa.selenium.ElementClickInterceptedException;
-//import org.openqa.selenium.JavascriptExecutor;
-//import org.openqa.selenium.WebDriver;
-//import org.openqa.selenium.WebElement;
-//import org.openqa.selenium.chrome.ChromeDriver;
-//import org.openqa.selenium.chrome.ChromeOptions;
-//import org.openqa.selenium.interactions.Actions;
-//import org.openqa.selenium.support.ui.ExpectedConditions;
-//import org.openqa.selenium.support.ui.WebDriverWait;
-//
-//import io.github.bonigarcia.wdm.WebDriverManager;
-//
-//public class UserManagementCreateTest {
-//
-//    private WebDriver driver;
-//    private Map<String, Object> vars;
-//    private WebDriverWait wait;
-//
-//    @BeforeEach
-//    public void setUp() {
-//        // Set up ChromeDriver using WebDriverManager and add the necessary flag.
-//        WebDriverManager.chromedriver().setup();
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--remote-allow-origins=*");
-//
-//        driver = new ChromeDriver(options);
-//        driver.manage().window().setSize(new Dimension(880, 1040));
-//        vars = new HashMap<>();
-//        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//    }
-//
-//    @AfterEach
-//    public void tearDown() {
-//        if (driver != null) {
-//            driver.quit();
-//        }
-//    }
-//    
-//    @Test
-//    public void testCreateDeleteNewAdmin() {
-//        openHomePage();
-//        login("admin", "admin");
-//        registerUser("testAdmin", "test123");
-//        selectRole("Admin");
-//        deleteUser();
-//    }
-//
-//    @Test
-//    public void testCreateDeleteCustServiceRep() {
-//        openHomePage();
-//        login("admin", "admin");
-//        registerUser("testCustRep", "test123");
-//        selectRole("Customer Service Rep");
-//        deleteUser();
-//    }
-//    
-//    @Test
-//    public void testCreateDeleteNetManageEng() {
-//        openHomePage();
-//        login("admin", "admin");
-//        registerUser("testNetMan", "test123");
-//        selectRole("Network Management Engineer");
-//        deleteUser();
-//    }
-//    
-//    @Test
-//    public void testCreateDeleteSupportEng() {
-//        openHomePage();
-//        login("admin", "admin");
-//        registerUser("testSupEng", "test123");
-//        selectRole("Support Engineer");
-//        deleteUser();
-//    }
-//
-//    private void openHomePage() {
-//        driver.get("http://localhost:9091/");
-//    }
-//
-//    private void login(String username, String password) {
-//        WebElement usernameField = wait.until(ExpectedConditions.elementToBeClickable(By.id("username")));
-//        usernameField.click();
-//        usernameField.sendKeys(username);
-//
-//        WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(By.id("password")));
-//        passwordField.sendKeys(password);
-//
-//        WebElement loginBtn = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn")));
-//        loginBtn.click();
-//
-//        WebElement primaryBtn = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn-primary > .ms-2")));
-//        primaryBtn.click();
-//
-//        WebElement successBtn = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn-success > span")));
-//        successBtn.click();
-//
-//        WebElement element = driver.findElement(By.cssSelector(".btn-success > span"));
-//        new Actions(driver).moveToElement(element).perform();
-//
-//        WebElement bodyElement = driver.findElement(By.tagName("body"));
-//        new Actions(driver).moveToElement(bodyElement, 0, 0).perform();
-//    }
-//
-//    private void registerUser(String username, String password) {
-//        WebElement usernameField = wait.until(ExpectedConditions.elementToBeClickable(By.id("username")));
-//        usernameField.click();
-//        usernameField.clear();
-//        usernameField.sendKeys(username);
-//
-//        WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(By.id("password")));
-//        passwordField.sendKeys(password);
-//    }
-//
-//    private void selectRole(String roleName) {
-//        WebElement roleDropdown = wait.until(ExpectedConditions.elementToBeClickable(By.id("role")));
-//        roleDropdown.click();
-//        WebElement roleOption = roleDropdown.findElement(By.xpath("//option[. = '" + roleName + "']"));
-//        roleOption.click();
-//
-//        WebElement saveUserBtn = wait.until(ExpectedConditions.elementToBeClickable(By.id("saveUser")));
-//        saveUserBtn.click();
-//    }
-//
-//    private void deleteUser() {
-//        WebElement deleteUserBtn = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".delete-user")));
-//        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", deleteUserBtn);
-//        try {
-//            deleteUserBtn.click();
-//        } catch (ElementClickInterceptedException e) {
-//            // Fallback to JavaScript click if normal click is intercepted
-//            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", deleteUserBtn);
-//        }
-//
-//        WebElement confirmDeleteBtn = wait.until(ExpectedConditions.elementToBeClickable(By.id("confirmDelete")));
-//        confirmDeleteBtn.click();
-//    }
-//    
-//}
+package com.tus.GamingSite.test.selenium;
+
+import com.tus.GamingSite.GamingSiteApplication;
+import org.junit.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.time.Duration;
+import java.util.*;
+
+public class UserManagementCreateTest {
+
+    private static ConfigurableApplicationContext context;
+    private WebDriver driver;
+    private JavascriptExecutor js;
+    private Map<String, Object> vars;
+    private WebDriverWait wait;
+
+    @BeforeClass
+    public static void startSpringBootApp() throws Exception {
+        context = SpringApplication.run(GamingSiteApplication.class, "--server.port=9091");
+        waitForAppStartup();
+    }
+
+    @Before
+    public void setUp() {
+        WebDriverManager.chromedriver().setup();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+
+        driver = new ChromeDriver(options);
+        js = (JavascriptExecutor) driver;
+        vars = new HashMap<>();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    }
+
+    @After
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+    @AfterClass
+    public static void stopSpringBootApp() {
+        if (context != null) {
+            context.close();
+        }
+    }
+
+    private static void waitForAppStartup() throws InterruptedException {
+        int retries = 0;
+        while (retries < 15) {
+            try {
+                HttpURLConnection conn = (HttpURLConnection) new URL("http://localhost:9091/").openConnection();
+                conn.setRequestMethod("GET");
+                if (conn.getResponseCode() == 200) {
+                    System.out.println("✅ App is up!");
+                    return;
+                }
+            } catch (Exception e) {
+                System.out.println("⏳ Waiting for app...");
+            }
+            Thread.sleep(1000);
+            retries++;
+        }
+        throw new RuntimeException("❌ App failed to start on port 9091");
+    }
+
+    @Test
+    public void usercreation() {
+        driver.get("http://localhost:9091/index.html");
+        driver.manage().window().setSize(new Dimension(1265, 1380));
+
+        // Login as admin
+        driver.findElement(By.id("username")).sendKeys("admin");
+        driver.findElement(By.id("password")).sendKeys("admin");
+        driver.findElement(By.cssSelector(".btn")).click();
+
+        // Navigate to user creation
+        driver.findElement(By.cssSelector(".btn-danger:nth-child(3)")).click();
+
+        // Fill user registration form
+        driver.findElement(By.cssSelector(".mb-3:nth-child(1) > .form-control")).sendKeys("newuser");
+        driver.findElement(By.cssSelector(".mb-3:nth-child(2) > .form-control")).sendKeys("newuserpass");
+        driver.findElement(By.cssSelector(".btn-primary:nth-child(5)")).click();
+
+        // Go to user management section
+        driver.findElement(By.linkText("User Management")).click();
+
+        // View user table
+        driver.findElement(By.linkText("View User Table")).click();
+
+        // Optionally: assert that new user appears in the list
+        WebElement table = driver.findElement(By.tagName("table"));
+        String tableText = table.getText();
+        Assert.assertTrue("New user should be listed in user table", tableText.contains("newuser"));
+    }
+
+}

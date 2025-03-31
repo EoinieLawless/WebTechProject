@@ -1,19 +1,13 @@
-Feature: Create User
+Feature: Admin creates a user
 
-  Background:
-    * url baseUrl
-    * header Authorization = 'Bearer ' + authToken
+Background:
+  * def login = call read('classpath:features/login.feature') { username: 'admin', password: 'admin' }
+  * def token = login.jwt
+  * url baseUrl
+  * header Authorization = 'Bearer ' + token
 
-  Scenario: Create a new user successfully
-    Given path '/admin/register'
-    And request
-    """
-    {
-      "username": "testuser123456789",
-      "password": "TestPass123",
-      "email": "testuser123@example.com",
-      "roles": ["USER"]
-    }
-    """
-    When method post
-    Then status 200
+Scenario: Register new user
+  Given path '/admin/register'
+  And request { username: 'newuser', password: 'pass', email: 'new@user.com' }
+  When method post
+  Then status 200
