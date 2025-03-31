@@ -2,44 +2,103 @@ pipeline {
   agent any
 
   tools {
-    maven 'Maven 3.9.4'   
-    jdk 'JDK 17'          
+    maven 'Maven_3.9.9'
+    jdk 'jdk17'
   }
 
   environment {
-    SONAR_TOKEN = credentials('sonar-token') // store in Jenkins > Credentials
+    JAR_NAME = 'GamingSite-0.0.1-SNAPSHOT.jar'
+    JAR_PATH = "GamingSite/target/${env.JAR_NAME}"
+    SONAR_PROJECT_KEY = 'GamingSite'
+    SONAR_HOST_URL = 'http://localhost:9000'         
+    SONAR_LOGIN = credentials('sonar-token')         
   }
 
   stages {
-    stage('Checkout') {
+
+    stage('Checkout Code') {
       steps {
         checkout scm
       }
     }
 
-    stage('Build & Test') {
+    stage('Build (No Tests)') {
       steps {
-        sh 'mvn clean verify'
+        dir('GamingSite') {
+          sh 'mvn clean install -DskipTests'
+        }
       }
     }
 
-    stage('SonarQube Analysis') {
+    stage('Unit Tests & Coverage') {
       steps {
-        withSonarQubeEnv('SonarQube') {
+        dir('GamingSite') {
+          sh 'mvn test'
+        }
+      }
+      post {
+        always {
+          junit 'target/surefire-reports/*.xml'
+        }
+      }
+    }
+
+    stage('Start Spring Boot App') {
+      steps {
+        dir('GamingSite') {
           sh '''
-            mvn sonar:sonar \
-              -Dsonar.projectKey=GamingSite \
-              -Dsonar.host.url=http://sonarqube:9000 \
-              -Dsonar.login=$SONAR_TOKEN
+            nohup java -jar target/GamingSite-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+            echo $! > app.pid
+            for i in {1..30}; do
+              if curl -s http://localhost:9091/actuator/health | grep '"status":"UP"' > /dev/null; then
+                echo "App is up!"
+                break
+              fi
+              echo "Waiting for app to start..."
+              sleep 2
+            done
           '''
         }
       }
     }
 
-    stage("Quality Gate") {
+    stage('Run Karate Integration Tests') {
+      steps {
+        dir('GamingSite') {
+          sh 'mvn test -Dtest=*KarateTest'
+        }
+      }
+    }
+
+    stage('SonarQube Analysis') {
+      steps {
+        dir('GamingSite') {
+          withSonarQubeEnv('SonarQubeServer') {
+            sh "mvn sonar:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_LOGIN}"
+          }
+        }
+      }
+    }
+
+    stage('Quality Gate') {
       steps {
         timeout(time: 1, unit: 'MINUTES') {
           waitForQualityGate abortPipeline: true
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      dir('GamingSite') {
+        script {
+          if (fileExists('app.pid')) {
+            sh 'kill $(cat app.pid) || true'
+            sh 'rm -f app.pid'
+          } else {
+            sh "pkill -f '${env.JAR_NAME}' || true"
+          }
         }
       }
     }
